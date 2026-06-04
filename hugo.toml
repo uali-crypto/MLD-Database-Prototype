@@ -1,0 +1,3 @@
+baseURL = 'https://your-netlify-site-name.netlify.app/'
+locale = 'en-us'
+title = 'MLD Database'

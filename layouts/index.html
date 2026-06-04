@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">{{ define "main" }}</p>
+<p class="p1">&lt;section class="form-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2&gt;Submit a New MLD Entry&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;p&gt;Fill out the form below to contribute to the database. Your ORCID iD is used to attribute your submission.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;form id="mld-form"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- ORCID --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label for="orcid"&gt;ORCID iD &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="orcid-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;input type="text" id="orcid" name="orcid" placeholder="0000-0000-0000-0000" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button type="button" id="orcid-lookup-btn"&gt;Look Up&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p id="orcid-result" class="orcid-result"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- DOI --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label for="doi"&gt;DOI Link &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="doi" name="doi" placeholder="https://doi.org/10.xxxx/xxxxx" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Precursor 1 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label for="precursor1"&gt;Precursor 1 &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="precursor1" name="precursor1" placeholder="e.g. trimethylaluminum" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Precursor 2 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label for="precursor2"&gt;Precursor 2 &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="precursor2" name="precursor2" placeholder="e.g. ethylene glycol" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Growth Temperature --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label for="temp"&gt;Growth Temperature (°C) &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="number" id="temp" name="temp" placeholder="e.g. 150" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button type="submit" id="submit-btn"&gt;Submit Entry&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p id="form-status" class="form-status"&gt;&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/form&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbza1KNMLZGFDW1eo149emlLSjLr4wwhBRMZaGrzFiKOwEb8pA3MZpOMRg9H7nMPn674dg/exec";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ORCID Lookup</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("orcid-lookup-btn").addEventListener("click", async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const orcidInput = document.getElementById("orcid").value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resultEl = document.getElementById("orcid-result");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!orcidInput) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.textContent = "Please enter an ORCID iD.";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.className = "orcid-result error";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const orcidClean = orcidInput.replace("https://orcid.org/", "");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const response = await fetch(`https://pub.orcid.org/v3.0/${orcidClean}/person`, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { "Accept": "application/json" }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.textContent = "ORCID iD not found. Please check and try again.";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.className = "orcid-result error";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const given = data.name?.["given-names"]?.value || "";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const family = data.name?.["family-name"]?.value || "";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const fullName = `${given} ${family}`.trim();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (fullName) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.textContent = `✓ Found: ${fullName}`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.className = "orcid-result success";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.textContent = "Name not publicly available for this ORCID iD.";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resultEl.className = "orcid-result error";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.textContent = "Error contacting ORCID. Please try again.";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.className = "orcid-result error";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Form Submission</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("mld-form").addEventListener("submit", async (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>e.preventDefault();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const statusEl = document.getElementById("form-status");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const orcidResult = document.getElementById("orcid-result").textContent;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!orcidResult.startsWith("✓")) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = "Please look up and verify your ORCID iD before submitting.";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.className = "form-status error";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const payload = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>orcid: document.getElementById("orcid").value.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>contributorName: orcidResult.replace("✓ Found: ", ""),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>doi: document.getElementById("doi").value.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>precursor1: document.getElementById("precursor1").value.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>precursor2: document.getElementById("precursor2").value.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>temp: document.getElementById("temp").value.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = "Submitting...";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.className = "form-status";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>await fetch(APPS_SCRIPT_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: "POST",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mode: "no-cors",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { "Content-Type": "application/json" },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify(payload),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = "✓ Entry submitted successfully. Thank you!";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.className = "form-status success";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("mld-form").reset();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("orcid-result").textContent = "";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = "Submission failed. Please try again.";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.className = "form-status error";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">{{ end }}</p>
+</body>
+</html>
