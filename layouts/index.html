@@ -5,38 +5,216 @@
 
   <form id="mld-form">
 
-    <!-- ORCID -->
-    <div class="form-group">
-      <label for="orcid">ORCID iD <span class="required">*</span></label>
-      <div class="orcid-row">
-        <input type="text" id="orcid" name="orcid" placeholder="0000-0000-0000-0000" />
-        <button type="button" id="orcid-lookup-btn">Look Up</button>
+    <!-- SECTION 1: Contributor Info (starts open) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle active" data-target="section-contributor">
+        Contributor Info <span class="toggle-icon">▲</span>
+      </button>
+      <div class="section-content open" id="section-contributor">
+        <div class="form-group">
+          <label for="orcid">ORCID iD <span class="required">*</span></label>
+          <div class="input-row">
+            <input type="text" id="orcid" name="orcid" placeholder="0000-0000-0000-0000" />
+            <button type="button" id="orcid-lookup-btn">Look Up</button>
+          </div>
+          <p id="orcid-result" class="orcid-result"></p>
+        </div>
       </div>
-      <p id="orcid-result" class="orcid-result"></p>
     </div>
 
-    <!-- DOI -->
-    <div class="form-group">
-      <label for="doi">DOI Link <span class="required">*</span></label>
-      <input type="text" id="doi" name="doi" placeholder="https://doi.org/10.xxxx/xxxxx" />
+    <!-- SECTION 2: Publication Info (collapsed) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle" data-target="section-publication">
+        Publication Info <span class="toggle-icon">▼</span>
+      </button>
+      <div class="section-content" id="section-publication">
+        <div class="form-group">
+          <label for="doi">DOI Link <span class="required">*</span></label>
+          <div class="input-row">
+            <input type="text" id="doi" name="doi" placeholder="https://doi.org/10.xxxx/xxxxx" />
+            <button type="button" id="doi-lookup-btn">Look Up</button>
+          </div>
+          <p id="doi-result" class="orcid-result"></p>
+        </div>
+        <div class="form-group">
+          <label for="first-author">First Author</label>
+          <input type="text" id="first-author" name="first-author" placeholder="Auto-filled from DOI" />
+        </div>
+        <div class="form-group">
+          <label for="last-author">Last Author</label>
+          <input type="text" id="last-author" name="last-author" placeholder="Auto-filled from DOI" />
+        </div>
+        <div class="form-group">
+          <label for="pub-year">Publication Year</label>
+          <input type="text" id="pub-year" name="pub-year" placeholder="Auto-filled from DOI" />
+        </div>
+        <div class="form-group">
+          <label for="journal">Journal</label>
+          <input type="text" id="journal" name="journal" placeholder="Auto-filled from DOI" />
+        </div>
+      </div>
     </div>
 
-    <!-- Precursor 1 -->
-    <div class="form-group">
-      <label for="precursor1">Precursor 1 <span class="required">*</span></label>
-      <input type="text" id="precursor1" name="precursor1" placeholder="e.g. trimethylaluminum" />
+    <!-- SECTION 3: Precursor 1 (collapsed) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle" data-target="section-precursor1">
+        Precursor 1 <span class="toggle-icon">▼</span>
+      </button>
+      <div class="section-content" id="section-precursor1">
+        <div class="form-group">
+          <label for="precursor1">Precursor 1 Name <span class="required">*</span></label>
+          <div class="input-row">
+            <input type="text" id="precursor1" name="precursor1" placeholder="e.g. Trimethylaluminum" />
+            <button type="button" class="pubchem-btn" data-input="precursor1" data-smiles="smiles1" data-result="smiles1-result">Look Up SMILES</button>
+          </div>
+          <p id="smiles1-result" class="orcid-result"></p>
+        </div>
+        <div class="form-group">
+          <label for="smiles1">SMILES for Precursor 1</label>
+          <input type="text" id="smiles1" name="smiles1" placeholder="Auto-filled from PubChem or enter manually" />
+        </div>
+        <div class="form-group">
+          <label for="p1-functional-groups">P1 # Functional Groups/Ligands</label>
+          <input type="number" id="p1-functional-groups" name="p1-functional-groups" placeholder="e.g. 2" />
+        </div>
+        <div class="form-group">
+          <label for="p1-class">Precursor 1 Class</label>
+          <input type="text" id="p1-class" name="p1-class" placeholder="e.g. Organometallic" />
+        </div>
+        <div class="form-group">
+          <label for="p1-ligand-type">Ligand/Functional Group Type 1</label>
+          <input type="text" id="p1-ligand-type" name="p1-ligand-type" placeholder="e.g. methyl" />
+        </div>
+        <div class="form-group">
+          <label for="p1-storage-temp">Precursor 1 Storage Temp</label>
+          <input type="text" id="p1-storage-temp" name="p1-storage-temp" placeholder="e.g. RT or 50" />
+        </div>
+      </div>
     </div>
 
-    <!-- Precursor 2 -->
-    <div class="form-group">
-      <label for="precursor2">Precursor 2 <span class="required">*</span></label>
-      <input type="text" id="precursor2" name="precursor2" placeholder="e.g. ethylene glycol" />
+    <!-- SECTION 4: Precursor 2 (collapsed) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle" data-target="section-precursor2">
+        Precursor 2 <span class="toggle-icon">▼</span>
+      </button>
+      <div class="section-content" id="section-precursor2">
+        <div class="form-group">
+          <label for="precursor2">Precursor 2 Name <span class="required">*</span></label>
+          <div class="input-row">
+            <input type="text" id="precursor2" name="precursor2" placeholder="e.g. Ethylene glycol" />
+            <button type="button" class="pubchem-btn" data-input="precursor2" data-smiles="smiles2" data-result="smiles2-result">Look Up SMILES</button>
+          </div>
+          <p id="smiles2-result" class="orcid-result"></p>
+        </div>
+        <div class="form-group">
+          <label for="smiles2">SMILES for Precursor 2</label>
+          <input type="text" id="smiles2" name="smiles2" placeholder="Auto-filled from PubChem or enter manually" />
+        </div>
+        <div class="form-group">
+          <label for="p2-functional-groups">P2 # Functional Groups/Ligands</label>
+          <input type="number" id="p2-functional-groups" name="p2-functional-groups" placeholder="e.g. 2" />
+        </div>
+        <div class="form-group">
+          <label for="p2-class">Precursor 2 Class</label>
+          <input type="text" id="p2-class" name="p2-class" placeholder="e.g. Aliphatic alcohol" />
+        </div>
+        <div class="form-group">
+          <label for="p2-ligand-type">Ligand/Functional Group Type 2</label>
+          <input type="text" id="p2-ligand-type" name="p2-ligand-type" placeholder="e.g. hydroxyl" />
+        </div>
+        <div class="form-group">
+          <label for="p2-storage-temp">Precursor 2 Storage Temp</label>
+          <input type="text" id="p2-storage-temp" name="p2-storage-temp" placeholder="e.g. RT or 65" />
+        </div>
+      </div>
     </div>
 
-    <!-- Growth Temperature -->
-    <div class="form-group">
-      <label for="temp">Growth Temperature (°C) <span class="required">*</span></label>
-      <input type="number" id="temp" name="temp" placeholder="e.g. 150" />
+    <!-- SECTION 5: Deposition Conditions (collapsed) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle" data-target="section-deposition">
+        Deposition Conditions <span class="toggle-icon">▼</span>
+      </button>
+      <div class="section-content" id="section-deposition">
+        <div class="form-group">
+          <label for="film-material">Film Material</label>
+          <select id="film-material" name="film-material">
+            <option value="">-- Select --</option>
+            <option value="Alucone">Alucone</option>
+            <option value="Titanicone">Titanicone</option>
+            <option value="Zincone">Zincone</option>
+            <option value="Polyurea">Polyurea</option>
+            <option value="Polyamide">Polyamide</option>
+            <option value="Polyimide">Polyimide</option>
+            <option value="Polyester">Polyester</option>
+            <option value="Polythiourea">Polythiourea</option>
+            <option value="Polyimine">Polyimine</option>
+            <option value="Tincone">Tincone</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group" id="film-material-other-group" style="display:none;">
+          <label for="film-material-other">Specify Film Material</label>
+          <input type="text" id="film-material-other" name="film-material-other" placeholder="Enter film material" />
+        </div>
+        <div class="form-group">
+          <label for="growth-temp">Growth Temperature (°C)</label>
+          <input type="text" id="growth-temp" name="growth-temp" placeholder="e.g. 150 or RT" />
+        </div>
+        <div class="form-group">
+          <label for="growth-per-cycle">Growth Per Cycle (Å)</label>
+          <input type="text" id="growth-per-cycle" name="growth-per-cycle" placeholder="e.g. 4 or 1.9-4.0" />
+        </div>
+        <div class="form-group">
+          <label for="substrate">Substrate</label>
+          <select id="substrate" name="substrate">
+            <option value="">-- Select --</option>
+            <option value="Si(100)">Si(100)</option>
+            <option value="Si(111)">Si(111)</option>
+            <option value="Si wafer">Si wafer</option>
+            <option value="Oxidized Si">Oxidized Si</option>
+            <option value="Amine terminated silicon">Amine terminated silicon</option>
+            <option value="KBr">KBr</option>
+            <option value="ZrO2 particles">ZrO2 particles</option>
+            <option value="Au/Glass">Au/Glass</option>
+            <option value="Ti-metalized PEN">Ti-metalized PEN</option>
+            <option value="Ti-metalized PET">Ti-metalized PET</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group" id="substrate-other-group" style="display:none;">
+          <label for="substrate-other">Specify Substrate</label>
+          <input type="text" id="substrate-other" name="substrate-other" placeholder="Enter substrate" />
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: Film Properties (collapsed) -->
+    <div class="form-section">
+      <button type="button" class="section-toggle" data-target="section-properties">
+        Film Properties <span class="toggle-icon">▼</span>
+      </button>
+      <div class="section-content" id="section-properties">
+        <div class="form-group">
+          <label for="refractive-index">Refractive Index (n at 590 nm)</label>
+          <input type="text" id="refractive-index" name="refractive-index" placeholder="e.g. 1.507" />
+        </div>
+        <div class="form-group">
+          <label for="elastic-modulus">Elastic Modulus (GPa)</label>
+          <input type="text" id="elastic-modulus" name="elastic-modulus" placeholder="e.g. 8.04" />
+        </div>
+        <div class="form-group">
+          <label for="hardness">Hardness (GPa)</label>
+          <input type="text" id="hardness" name="hardness" placeholder="e.g. 0.25" />
+        </div>
+        <div class="form-group">
+          <label for="stability">Stability (Thickness Reduction per Day %)</label>
+          <input type="text" id="stability" name="stability" placeholder="e.g. 3.67" />
+        </div>
+        <div class="form-group">
+          <label for="density">Density (g/cm³)</label>
+          <input type="text" id="density" name="density" placeholder="e.g. 1.5" />
+        </div>
+      </div>
     </div>
 
     <button type="submit" id="submit-btn">Submit Entry</button>
@@ -46,7 +224,30 @@
 </section>
 
 <script>
-  const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyowf-cqSmbmZc1bG6DUIlAuMviVfZJYRezLqkAZBAjPbJ3iLD6  g3E3sjVTsSIJLByLYQ/exec";
+
+  // Collapsible sections
+  document.querySelectorAll(".section-toggle").forEach(button => {
+    button.addEventListener("click", () => {
+      const target = document.getElementById(button.dataset.target);
+      const icon = button.querySelector(".toggle-icon");
+      const isOpen = target.classList.contains("open");
+      target.classList.toggle("open", !isOpen);
+      button.classList.toggle("active", !isOpen);
+      icon.textContent = isOpen ? "▼" : "▲";
+    });
+  });
+
+  // Show/hide Other fields for dropdowns
+  document.getElementById("film-material").addEventListener("change", function () {
+    document.getElementById("film-material-other-group").style.display =
+      this.value === "Other" ? "block" : "none";
+  });
+
+  document.getElementById("substrate").addEventListener("change", function () {
+    document.getElementById("substrate-other-group").style.display =
+      this.value === "Other" ? "block" : "none";
+  });
 
   // ORCID Lookup
   document.getElementById("orcid-lookup-btn").addEventListener("click", async () => {
@@ -91,6 +292,104 @@
     }
   });
 
+  // DOI Lookup via CrossRef
+  document.getElementById("doi-lookup-btn").addEventListener("click", async () => {
+    const doiInput = document.getElementById("doi").value.trim();
+    const resultEl = document.getElementById("doi-result");
+
+    if (!doiInput) {
+      resultEl.textContent = "Please enter a DOI.";
+      resultEl.className = "orcid-result error";
+      return;
+    }
+
+    const doiClean = doiInput.replace("https://doi.org/", "");
+
+    try {
+      const response = await fetch(`https://api.crossref.org/works/${doiClean}`);
+
+      if (!response.ok) {
+        resultEl.textContent = "DOI not found. Please check and try again.";
+        resultEl.className = "orcid-result error";
+        return;
+      }
+
+      const data = await response.json();
+      const work = data.message;
+
+      // Authors
+      const authors = work.author || [];
+      const firstAuthor = authors.length > 0 ? authors[0].family || "" : "";
+      const lastAuthor = authors.length > 1 ? authors[authors.length - 1].family || "" : firstAuthor;
+
+      // Year
+      const year = work.published?.["date-parts"]?.[0]?.[0] || 
+                   work["published-print"]?.["date-parts"]?.[0]?.[0] || "";
+
+      // Journal
+      const journal = work["container-title"]?.[0] || "";
+
+      // Populate fields
+      document.getElementById("first-author").value = firstAuthor;
+      document.getElementById("last-author").value = lastAuthor;
+      document.getElementById("pub-year").value = year;
+      document.getElementById("journal").value = journal;
+
+      resultEl.textContent = "✓ Publication info auto-filled. Please verify and edit if needed.";
+      resultEl.className = "orcid-result success";
+
+    } catch (err) {
+      resultEl.textContent = "Error contacting CrossRef. Please try again or fill in manually.";
+      resultEl.className = "orcid-result error";
+    }
+  });
+
+  // PubChem SMILES Lookup
+  document.querySelectorAll(".pubchem-btn").forEach(button => {
+    button.addEventListener("click", async () => {
+      const inputId = button.dataset.input;
+      const smilesId = button.dataset.smiles;
+      const resultId = button.dataset.result;
+
+      const name = document.getElementById(inputId).value.trim();
+      const resultEl = document.getElementById(resultId);
+
+      if (!name) {
+        resultEl.textContent = "Please enter a precursor name first.";
+        resultEl.className = "orcid-result error";
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(name)}/property/IsomericSMILES/JSON`
+        );
+
+        if (!response.ok) {
+          resultEl.textContent = "Compound not found on PubChem. Please enter SMILES manually.";
+          resultEl.className = "orcid-result error";
+          return;
+        }
+
+        const data = await response.json();
+        const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES || "";
+
+        if (smiles) {
+          document.getElementById(smilesId).value = smiles;
+          resultEl.textContent = "✓ SMILES auto-filled. Please verify and edit if needed.";
+          resultEl.className = "orcid-result success";
+        } else {
+          resultEl.textContent = "SMILES not found. Please enter manually.";
+          resultEl.className = "orcid-result error";
+        }
+
+      } catch (err) {
+        resultEl.textContent = "Error contacting PubChem. Please try again or enter manually.";
+        resultEl.className = "orcid-result error";
+      }
+    });
+  });
+
   // Form Submission
   document.getElementById("mld-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -104,13 +403,45 @@
       return;
     }
 
+    const filmMaterialRaw = document.getElementById("film-material").value;
+    const filmMaterial = filmMaterialRaw === "Other"
+      ? document.getElementById("film-material-other").value.trim()
+      : filmMaterialRaw;
+
+    const substrateRaw = document.getElementById("substrate").value;
+    const substrate = substrateRaw === "Other"
+      ? document.getElementById("substrate-other").value.trim()
+      : substrateRaw;
+
     const payload = {
-      orcid: document.getElementById("orcid").value.trim(),
-      contributorName: orcidResult.replace("✓ Found: ", ""),
-      doi: document.getElementById("doi").value.trim(),
       precursor1: document.getElementById("precursor1").value.trim(),
       precursor2: document.getElementById("precursor2").value.trim(),
-      temp: document.getElementById("temp").value.trim(),
+      filmMaterial: filmMaterial,
+      growthTemp: document.getElementById("growth-temp").value.trim(),
+      growthPerCycle: document.getElementById("growth-per-cycle").value.trim(),
+      doi: document.getElementById("doi").value.trim(),
+      smiles1: document.getElementById("smiles1").value.trim(),
+      p1FunctionalGroups: document.getElementById("p1-functional-groups").value.trim(),
+      p1Class: document.getElementById("p1-class").value.trim(),
+      p1LigandType: document.getElementById("p1-ligand-type").value.trim(),
+      p1StorageTemp: document.getElementById("p1-storage-temp").value.trim(),
+      smiles2: document.getElementById("smiles2").value.trim(),
+      p2FunctionalGroups: document.getElementById("p2-functional-groups").value.trim(),
+      p2Class: document.getElementById("p2-class").value.trim(),
+      p2LigandType: document.getElementById("p2-ligand-type").value.trim(),
+      p2StorageTemp: document.getElementById("p2-storage-temp").value.trim(),
+      substrate: substrate,
+      firstAuthor: document.getElementById("first-author").value.trim(),
+      lastAuthor: document.getElementById("last-author").value.trim(),
+      pubYear: document.getElementById("pub-year").value.trim(),
+      refractiveIndex: document.getElementById("refractive-index").value.trim(),
+      elasticModulus: document.getElementById("elastic-modulus").value.trim(),
+      hardness: document.getElementById("hardness").value.trim(),
+      stability: document.getElementById("stability").value.trim(),
+      density: document.getElementById("density").value.trim(),
+      journal: document.getElementById("journal").value.trim(),
+      orcid: document.getElementById("orcid").value.trim(),
+      contributorName: orcidResult.replace("✓ Found: ", ""),
     };
 
     statusEl.textContent = "Submitting...";
@@ -127,7 +458,9 @@
       statusEl.textContent = "✓ Entry submitted successfully. Thank you!";
       statusEl.className = "form-status success";
       document.getElementById("mld-form").reset();
-      document.getElementById("orcid-result").textContent = "";
+      document.querySelectorAll(".orcid-result").forEach(el => el.textContent = "");
+      document.getElementById("film-material-other-group").style.display = "none";
+      document.getElementById("substrate-other-group").style.display = "none";
 
     } catch (err) {
       statusEl.textContent = "Submission failed. Please try again.";
@@ -136,3 +469,4 @@
   });
 </script>
 {{ end }}
+
