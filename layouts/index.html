@@ -372,7 +372,7 @@
         }
 
         const data = await response.json();
-        const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES || "";
+        const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES || data.PropertyTable?.Properties?.[0]?.SMILES || "";
 
         if (smiles) {
           document.getElementById(smilesId).value = smiles;
