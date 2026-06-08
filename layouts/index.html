@@ -344,51 +344,245 @@
     }
   });
 
-  // PubChem SMILES Lookup
-  document.querySelectorAll(".pubchem-btn").forEach(button => {
-    button.addEventListener("click", async () => {
-      const inputId = button.dataset.input;
-      const smilesId = button.dataset.smiles;
-      const resultId = button.dataset.result;
+  // ===== SMILES CLASSIFICATION RULES =====
+// To add a new class, just add a new entry to this list
+const CLASSIFICATION_RULES = [
+  // Organometallics — metals first
+  {
+    name: "Organometallic",
+    ligandType: "methyl",
+    pattern: (s) => /\[Al\]/.test(s) && /C\[Al\]|^\[Al\](C)/.test(s)
+  },
+  {
+    name: "Organometallic",
+    ligandType: "ethyl",
+    pattern: (s) => /\[Zn\]/.test(s) && /CC\[Zn\]/.test(s)
+  },
+  {
+    name: "Organometallic",
+    ligandType: "chlorine",
+    pattern: (s) => /\[Ti\]/.test(s) && /Cl/.test(s)
+  },
+  {
+    name: "Organometallic",
+    ligandType: "dimethylamino",
+    pattern: (s) => /\[Sn\]/.test(s) && /N\(C\)C/.test(s)
+  },
+  {
+    name: "Organometallic",
+    ligandType: "unknown",
+    pattern: (s) => /\[Al\]|\[Ti\]|\[Zn\]|\[Sn\]|\[Cu\]|\[Fe\]|\[Co\]|\[Ni\]|\[Hf\]|\[Zr\]/.test(s)
+  },
 
-      const name = document.getElementById(inputId).value.trim();
-      const resultEl = document.getElementById(resultId);
+  // Isocyanates
+  {
+    name: "Aromatic isocyanate",
+    ligandType: "isocyanate",
+    pattern: (s) => /N=C=O/.test(s) && /c1/.test(s)
+  },
+  {
+    name: "Aliphatic isocyanate",
+    ligandType: "isocyanate",
+    pattern: (s) => /N=C=O/.test(s) && !/c1/.test(s)
+  },
 
-      if (!name) {
-        resultEl.textContent = "Please enter a precursor name first.";
+  // Isothiocyanates
+  {
+    name: "Aromatic isothiocyanate",
+    ligandType: "isothiocyanate",
+    pattern: (s) => /N=C=S/.test(s) && /c1/.test(s)
+  },
+  {
+    name: "Aliphatic isothiocyanate",
+    ligandType: "isothiocyanate",
+    pattern: (s) => /N=C=S/.test(s) && !/c1/.test(s)
+  },
+
+  // Acyl chlorides
+  {
+    name: "Aromatic acyl chloride",
+    ligandType: "acyl chloride",
+    pattern: (s) => /C\(=O\)Cl/.test(s) && /c1/.test(s)
+  },
+  {
+    name: "Aliphatic acyl chloride",
+    ligandType: "acyl chloride",
+    pattern: (s) => /C\(=O\)Cl/.test(s) && !/c1/.test(s)
+  },
+
+  // Anhydrides
+  {
+    name: "Aromatic anhydride",
+    ligandType: "anhydride",
+    pattern: (s) => /C\(=O\)OC\(=O\)/.test(s) && /c1/.test(s)
+  },
+  {
+    name: "Aliphatic anhydride",
+    ligandType: "anhydride",
+    pattern: (s) => /C\(=O\)OC\(=O\)/.test(s) && !/c1/.test(s)
+  },
+
+  // Aldehydes
+  {
+    name: "Aromatic aldehyde",
+    ligandType: "aldehyde",
+    pattern: (s) => /C=O/.test(s) && /c1/.test(s) && !/C\(=O\)Cl/.test(s) && !/C\(=O\)OC\(=O\)/.test(s)
+  },
+  {
+    name: "Aliphatic aldehyde",
+    ligandType: "aldehyde",
+    pattern: (s) => /C=O/.test(s) && !/c1/.test(s) && !/C\(=O\)Cl/.test(s) && !/C\(=O\)OC\(=O\)/.test(s)
+  },
+
+  // Amines
+  {
+    name: "Aromatic amine",
+    ligandType: "amine",
+    pattern: (s) => /N/.test(s) && /c1/.test(s) && !/N=C=O/.test(s) && !/N=C=S/.test(s) && !/N\(C\)C/.test(s)
+  },
+  {
+    name: "Aliphatic amine",
+    ligandType: "amine",
+    pattern: (s) => /^N|NCC|CCN|NCCCC|NCCN/.test(s) && !/c1/.test(s) && !/N=C=O/.test(s) && !/N=C=S/.test(s)
+  },
+
+  // Alcohols
+  {
+    name: "Aromatic alcohol",
+    ligandType: "hydroxyl",
+    pattern: (s) => /Oc1|c1.*O/.test(s) && !/C\(=O\)/.test(s)
+  },
+  {
+    name: "Aliphatic alcohol",
+    ligandType: "hydroxyl",
+    pattern: (s) => /OCCO|OCC|C\(O\)/.test(s) && !/c1/.test(s) && !/C\(=O\)/.test(s)
+  },
+];
+
+// ===== FUNCTIONAL GROUP COUNTERS =====
+const FUNCTIONAL_GROUP_COUNTERS = {
+  "isocyanate":      (s) => (s.match(/N=C=O/g) || []).length,
+  "isothiocyanate":  (s) => (s.match(/N=C=S/g) || []).length,
+  "acyl chloride":   (s) => (s.match(/C\(=O\)Cl/g) || []).length,
+  "anhydride":       (s) => (s.match(/C\(=O\)OC\(=O\)/g) || []).length,
+  "aldehyde":        (s) => (s.match(/C=O/g) || []).length,
+  "amine":           (s) => (s.match(/(?<![=])N(?!([=]|[A-Z]))/g) || []).length,
+  "hydroxyl":        (s) => (s.match(/(?<![A-Z])O(?!([A-Z]|[=]))/g) || []).length,
+  "methyl":          (s) => (s.match(/C\[Al\]|(?<=\[Al\]\()C(?=\))/g) || []).length,
+  "ethyl":           (s) => (s.match(/CC\[Zn\]/g) || []).length,
+  "chlorine":        (s) => (s.match(/Cl/g) || []).length,
+  "dimethylamino":   (s) => (s.match(/N\(C\)C/g) || []).length,
+};
+
+// ===== SMILES CLASSIFIER FUNCTION =====
+function classifySmiles(smiles) {
+  if (!smiles) return { precursorClass: "", ligandType: "", functionalGroups: "" };
+
+  const detectedClasses = [];
+  const detectedLigands = [];
+
+  // Check all rules
+  for (const rule of CLASSIFICATION_RULES) {
+    try {
+      if (rule.pattern(smiles)) {
+        if (!detectedClasses.includes(rule.name)) {
+          detectedClasses.push(rule.name);
+        }
+        if (!detectedLigands.includes(rule.ligandType)) {
+          detectedLigands.push(rule.ligandType);
+        }
+      }
+    } catch(e) {
+      continue;
+    }
+  }
+
+  // If nothing matched, return blank (not confident)
+  if (detectedClasses.length === 0) {
+    return { precursorClass: "", ligandType: "", functionalGroups: "" };
+  }
+
+  // Count functional groups based on detected ligand types
+  let totalCount = 0;
+  for (const ligand of detectedLigands) {
+    if (FUNCTIONAL_GROUP_COUNTERS[ligand]) {
+      totalCount += FUNCTIONAL_GROUP_COUNTERS[ligand](smiles);
+    }
+  }
+
+  return {
+    precursorClass: detectedClasses.join(", "),
+    ligandType: detectedLigands.join(", "),
+    functionalGroups: totalCount > 0 ? String(totalCount) : ""
+  };
+}
+
+// ===== PUBCHEM SMILES LOOKUP =====
+document.querySelectorAll(".pubchem-btn").forEach(button => {
+  button.addEventListener("click", async () => {
+    const inputId = button.dataset.input;
+    const smilesId = button.dataset.smiles;
+    const resultId = button.dataset.result;
+    const name = document.getElementById(inputId).value.trim();
+    const resultEl = document.getElementById(resultId);
+
+    if (!name) {
+      resultEl.textContent = "Please enter a precursor name first.";
+      resultEl.className = "orcid-result error";
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(name)}/property/IsomericSMILES/JSON`
+      );
+
+      if (!response.ok) {
+        resultEl.textContent = "Compound not found on PubChem. Please enter SMILES manually.";
         resultEl.className = "orcid-result error";
         return;
       }
 
-      try {
-        const response = await fetch(
-          `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(name)}/property/IsomericSMILES/JSON`
-        );
+      const data = await response.json();
+      const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES ||
+                     data.PropertyTable?.Properties?.[0]?.SMILES || "";
 
-        if (!response.ok) {
-          resultEl.textContent = "Compound not found on PubChem. Please enter SMILES manually.";
-          resultEl.className = "orcid-result error";
-          return;
+      if (smiles) {
+        document.getElementById(smilesId).value = smiles;
+
+        // Run classifier
+        const classification = classifySmiles(smiles);
+
+        // Determine which precursor number we're working with
+        const precursorNum = inputId === "precursor1" ? "1" : "2";
+
+        // Fill in classification fields
+        const classField = document.getElementById(`p${precursorNum}-class`);
+        const ligandField = document.getElementById(`p${precursorNum}-ligand-type`);
+        const groupsField = document.getElementById(`p${precursorNum}-functional-groups`);
+
+        if (classField && classification.precursorClass) {
+          classField.value = classification.precursorClass;
+        }
+        if (ligandField && classification.ligandType) {
+          ligandField.value = classification.ligandType;
+        }
+        if (groupsField && classification.functionalGroups) {
+          groupsField.value = classification.functionalGroups;
         }
 
-        const data = await response.json();
-        const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES || data.PropertyTable?.Properties?.[0]?.SMILES || "";
-
-        if (smiles) {
-          document.getElementById(smilesId).value = smiles;
-          resultEl.textContent = "✓ SMILES auto-filled. Please verify and edit if needed.";
-          resultEl.className = "orcid-result success";
-        } else {
-          resultEl.textContent = "SMILES not found. Please enter manually.";
-          resultEl.className = "orcid-result error";
-        }
-
-      } catch (err) {
-        resultEl.textContent = "Error contacting PubChem. Please try again or enter manually.";
+        resultEl.textContent = "✓ SMILES auto-filled. Please verify classification and edit if needed.";
+        resultEl.className = "orcid-result success";
+      } else {
+        resultEl.textContent = "SMILES not found. Please enter manually.";
         resultEl.className = "orcid-result error";
       }
-    });
+    } catch (err) {
+      resultEl.textContent = "Error contacting PubChem. Please try again or enter manually.";
+      resultEl.className = "orcid-result error";
+    }
   });
+});
 
   // Form Submission
   document.getElementById("mld-form").addEventListener("submit", async (e) => {
