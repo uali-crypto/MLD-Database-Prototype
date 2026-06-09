@@ -243,7 +243,7 @@
       const data = await response.json();
       const given = data.name?.["given-names"]?.value || "";
       const family = data.name?.["family-name"]?.value || "";
-      const fullName = `$${given} $${family}`.trim();
+      const fullName = `${given} ${family}`.trim();
 
       if (fullName) {
         resultEl.textContent = `✓ Found: ${fullName}`;
