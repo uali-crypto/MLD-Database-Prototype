@@ -450,12 +450,12 @@ const CLASSIFICATION_RULES = [
   {
     name: "Aromatic alcohol",
     ligandType: "hydroxyl",
-    pattern: (s) => /Oc1|c1.*O/.test(s) && !/C\(=O\)/.test(s)
+    pattern: (s) => /Oc1|c1.*O|OC.*c1/.test(s) && !/C\(=O\)/.test(s)
   },
   {
     name: "Aliphatic alcohol",
     ligandType: "hydroxyl",
-    pattern: (s) => /OCCO|OCC|C\(O\)/.test(s) && !/c1/.test(s) && !/C\(=O\)/.test(s)
+    pattern: (s) => /OCCO|OCC|C\(O\)|C\(CO\)|CCO|COC/.test(s) && !/c1/.test(s) && !/C\(=O\)/.test(s)
   },
 ];
 
@@ -467,7 +467,7 @@ const FUNCTIONAL_GROUP_COUNTERS = {
   "anhydride":       (s) => (s.match(/C\(=O\)OC\(=O\)/g) || []).length,
   "aldehyde":        (s) => (s.match(/C=O/g) || []).length,
   "amine":           (s) => (s.match(/(?<![=])N(?!([=]|[A-Z]))/g) || []).length,
-  "hydroxyl":        (s) => (s.match(/(?<![A-Z])O(?!([A-Z]|[=]))/g) || []).length,
+  "hydroxyl":        (s) => (s.match(/(?<![A-Z])O(?![A-Z=])|O(?=C)|(?<=C)O/g) || []).length,
   "methyl":          (s) => (s.match(/C\[Al\]|(?<=\[Al\]\()C(?=\))/g) || []).length,
   "ethyl":           (s) => (s.match(/CC\[Zn\]/g) || []).length,
   "chlorine":        (s) => (s.match(/Cl/g) || []).length,
