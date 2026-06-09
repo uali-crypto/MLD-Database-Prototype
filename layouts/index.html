@@ -544,12 +544,11 @@ document.querySelectorAll(".pubchem-btn").forEach(button => {
       }
 
       const data = await response.json();
-      const canonical = data.PropertyTable?.Properties?.[0]?.CanonicalSMILES ||
-                        data.PropertyTable?.Properties?.[0]?.SMILES || "";
-      const isomeric = data.PropertyTable?.Properties?.[0]?.IsomericSMILES ||
-                       data.PropertyTable?.Properties?.[0]?.SMILES || "";
-      const smiles = isomeric || canonical;
-      const classifyWith = canonical || isomeric;
+      const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES ||
+                     data.PropertyTable?.Properties?.[0]?.CanonicalSMILES ||
+                     data.PropertyTable?.Properties?.[0]?.SMILES ||
+                     data.PropertyTable?.Properties?.[0]?.ConnectivitySMILES || "";
+      const classifyWith = smiles;
 
       if (smiles) {
         document.getElementById(smilesId).value = smiles;
