@@ -551,10 +551,12 @@
       density: document.getElementById("density").value.trim(),
     };
 
-    statusEl.textContent = "Submitting...";
+    statusEl.textContent = "Submitting..."; 
 
+    console.log("Submitting payload:", JSON.stringify(payload));
+    
     try {
-      await fetch(APPS_SCRIPT_URL, {
+      await fetch(https://script.google.com/macros/s/AKfycbyowf-cqSmbmZc1bG6DUIlAuMviVfZJYRezLqkAZBAjPbJ3iLD6g3E3sjVTsSIJLByLYQ/exec, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
