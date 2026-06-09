@@ -555,6 +555,10 @@ document.querySelectorAll(".pubchem-btn").forEach(button => {
 
         // Determine which precursor number we're working with
         const precursorNum = inputId === "precursor1" ? "1" : "2";
+        console.log("precursorNum:", precursorNum);
+        console.log("smiles:", smiles);
+        console.log("classification:", classification);
+        console.log("classField:", document.getElementById(`p${precursorNum}-class`));
 
         // Fill in classification fields
         const classField = document.getElementById(`p${precursorNum}-class`);
