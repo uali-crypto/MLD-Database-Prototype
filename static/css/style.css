@@ -413,6 +413,15 @@ a:hover { text-decoration: underline; }
 
 .section-body.open { display: block; }
 
+.section-content {
+  display: none;
+  padding: 1.25rem;
+  border-top: 1.5px solid #e8ecf3;
+  background: #fff;
+}
+
+.section-content.open { display: block; }
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
