@@ -556,13 +556,27 @@
 
       // Fill in the banner
       const banner = document.getElementById("orcid-user-banner");
-      banner.innerHTML = `
-        <p>✓ Signed in as <strong>${name}</strong> 
-        ${institution ? `(${institution})` : ""} 
-        — ORCID: ${orcidId}
-        ${email ? `— ${email}` : ""}</p>
-      `;
 
+      const p = document.createElement("p");
+
+      p.appendChild(document.createTextNode("✓ Signed in as "));
+
+      const strong = document.createElement("strong");
+      strong.textContent = name;
+      p.appendChild(strong);
+
+      if (institution) {
+      p.appendChild(document.createTextNode(` (${institution})`));
+     }
+
+      p.appendChild(document.createTextNode(` — ORCID: ${orcidId}`));
+
+      if (email) {
+      p.appendChild(document.createTextNode(` — ${email}`));
+     }
+
+    banner.appendChild(p);
+      
       // Store values for form submission
       document.getElementById("orcid").value = orcidId;
       document.getElementById("orcid-result").textContent = `✓ Found: ${name}`;
