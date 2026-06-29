@@ -580,30 +580,28 @@ a:hover { text-decoration: underline; }
   align-items: center;
   gap: 0.5rem;
   flex-wrap: nowrap;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .inline-input-row .input-short {
-  width: 90px;
-  flex-shrink: 0;
-}
-
-.unit-label {
-  font-size: 0.85rem;
-  color: #4a6fa5;
-  font-weight: 600;
-  white-space: nowrap;
+  width: 80px;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .unit-select {
-  padding: 0.45rem 0.6rem;
+  padding: 0.45rem 0.4rem;
   border: 1.5px solid #c8d8e8;
   border-radius: 7px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   background: #fff;
   cursor: pointer;
   outline: none;
   width: auto;
-  flex-shrink: 0;
+  max-width: 110px;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .unit-select:focus { border-color: #4a6fa5; }
