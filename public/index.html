@@ -16,25 +16,27 @@
     
 <section class="form-container">
   <h2>Submit a New MLD Entry</h2>
-  <p>Fill out the form below to contribute to the database. Your ORCID iD is used to attribute your submission.</p>
-  <form id="mld-form">
+  <p>Fill out the form below to contribute to the database. Sign in with your ORCID iD to get started.</p>
+
+  
+  <div id="orcid-login-screen">
+    <div class="orcid-signin-box">
+      <p>You must sign in with your ORCID iD before accessing the submission form.</p>
+      <a href="https://orcid-auth.uali-800.workers.dev/login" class="orcid-signin-btn">
+        <img src="https://orcid.org/sites/default/files/images/orcid_24x24.png" alt="ORCID logo" />
+        Sign in with ORCID
+      </a>
+    </div>
+  </div>
+
+  
+  <div id="mld-form-wrapper" style="display:none;">
+    <div class="orcid-user-banner" id="orcid-user-banner"></div>
+    <form id="mld-form">
 
     
-    <div class="form-section">
-      <button type="button" class="section-toggle active" data-target="section-contributor">
-        Contributor Info <span class="toggle-icon">▲</span>
-      </button>
-      <div class="section-content open" id="section-contributor">
-        <div class="form-group">
-          <label for="orcid">ORCID iD <span class="required">*</span></label>
-          <div class="input-row">
-            <input type="text" id="orcid" name="orcid" placeholder="0000-0000-0000-0000" />
-            <button type="button" id="orcid-lookup-btn">Look Up</button>
-          </div>
-          <p id="orcid-result" class="orcid-result"></p>
-        </div>
-      </div>
-    </div>
+    <input type="hidden" id="orcid" name="orcid" />
+    <input type="hidden" id="orcid-result" name="orcid-result" />
 
     
     <div class="form-section">
@@ -204,6 +206,7 @@
     <button type="submit" id="submit-btn">Submit Entry</button>
     <p id="form-status" class="form-status"></p>
   </form>
+  </div> 
 </section>
 
 <script>
@@ -229,48 +232,6 @@
   document.getElementById("substrate").addEventListener("change", function () {
     document.getElementById("substrate-other-group").style.display =
       this.value === "Other" ? "block" : "none";
-  });
-
-  
-  document.getElementById("orcid-lookup-btn").addEventListener("click", async () => {
-    const orcidInput = document.getElementById("orcid").value.trim();
-    const resultEl = document.getElementById("orcid-result");
-
-    if (!orcidInput) {
-      resultEl.textContent = "Please enter an ORCID iD.";
-      resultEl.className = "orcid-result error";
-      return;
-    }
-
-    const orcidClean = orcidInput.replace("https://orcid.org/", "");
-
-    try {
-      const response = await fetch(`https://pub.orcid.org/v3.0/${orcidClean}/person`, {
-        headers: { "Accept": "application/json" }
-      });
-
-      if (!response.ok) {
-        resultEl.textContent = "ORCID iD not found. Please check and try again.";
-        resultEl.className = "orcid-result error";
-        return;
-      }
-
-      const data = await response.json();
-      const given = data.name?.["given-names"]?.value || "";
-      const family = data.name?.["family-name"]?.value || "";
-      const fullName = `${given} ${family}`.trim();
-
-      if (fullName) {
-        resultEl.textContent = `✓ Found: ${fullName}`;
-        resultEl.className = "orcid-result success";
-      } else {
-        resultEl.textContent = "Name not publicly available for this ORCID iD.";
-        resultEl.className = "orcid-result error";
-      }
-    } catch (err) {
-      resultEl.textContent = "Error contacting ORCID. Please try again.";
-      resultEl.className = "orcid-result error";
-    }
   });
 
   
@@ -594,6 +555,42 @@
       statusEl.className = "form-status error";
     }
   });
+
+  
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const orcidId = params.get("orcid");
+    const name = params.get("name");
+    const email = params.get("email");
+    const institution = params.get("institution");
+
+    if (orcidId && name) {
+      
+      document.getElementById("orcid-login-screen").style.display = "none";
+      document.getElementById("mld-form-wrapper").style.display = "block";
+
+      
+      const banner = document.getElementById("orcid-user-banner");
+      banner.innerHTML = `
+        <p>✓ Signed in as <strong>${name}</strong> 
+        ${institution ? `(${institution})` : ""} 
+        — ORCID: ${orcidId}
+        ${email ? `— ${email}` : ""}</p>
+      `;
+
+      
+      document.getElementById("orcid").value = orcidId;
+      document.getElementById("orcid-result").textContent = `✓ Found: ${name}`;
+      document.getElementById("orcid-result").className = "orcid-result success";
+
+      
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      
+      document.getElementById("orcid-login-screen").style.display = "block";
+      document.getElementById("mld-form-wrapper").style.display = "none";
+    }
+  })();
 </script>
 
   </main>
