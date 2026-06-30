@@ -575,6 +575,8 @@ async function lookupPubChem(name) {
     const data = await response.json();
     console.log("PubChem data:", data);
     const smiles = data.PropertyTable?.Properties?.[0]?.IsomericSMILES ||
+                   data.PropertyTable?.Properties?.[0]?.CanonicalSMILES ||
+                   data.PropertyTable?.Properties?.[0]?.SMILES ||
                    data.PropertyTable?.Properties?.[0]?.CanonicalSMILES || "";
     console.log("SMILES found:", smiles);
     const classification = classifySmiles(smiles);
