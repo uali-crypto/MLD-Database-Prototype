@@ -486,7 +486,7 @@
       document.getElementById("journal").value = journal;
 
       checkIcon.style.display = "inline";
-      confirmedText.textContent = `Confirmed: $${lastAuthor} et al. $${year} ${journal}`;
+      confirmedText.textContent = `Confirmed: ${lastAuthor} et al. ${year} ${journal}`;
       confirmedText.className = "doi-confirmed-text success";
       resultEl.textContent = "";
 
@@ -561,7 +561,7 @@
     if (!name) return { smiles: "", classification: {} };
     try {
       const response = await fetch(
-        `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/$${encodeURIComponent(name)}/property/CanonicalSMILES,IsomericSMILES/JSON?_=$${Date.now()}`
+        `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(name)}/property/CanonicalSMILES,IsomericSMILES/JSON?_=${Date.now()}`
       );
       if (!response.ok) return { smiles: "", classification: {} };
       const data = await response.json();
