@@ -650,27 +650,37 @@ a:hover { text-decoration: underline; }
 .info-icon .tooltip-text {
   visibility: hidden;
   opacity: 0;
-  background: #1a1a2e;
+  background-color: #1a1a2e;
   color: #fff;
-  font-size: 0.78rem;
-  font-weight: 400;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
   border-radius: 7px;
-  padding: 0.5rem 0.75rem;
   position: absolute;
-  bottom: 125%;
+  z-index: 9999;
+  bottom: 130%;
   left: 50%;
   transform: translateX(-50%);
-  width: 220px;
-  z-index: 10;
-  transition: opacity 0.2s;
-  pointer-events: none;
+  width: 240px;
+  max-width: 240px;
+  white-space: normal;
+  word-wrap: break-word;
+  font-size: 0.8rem;
   line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 .info-icon:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+/* For tooltips near the right edge */
+.info-icon.tooltip-left .tooltip-text {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
 }
 
 /* ===== PRECURSOR 3 TOGGLE ===== */
