@@ -497,6 +497,10 @@ a:hover { text-decoration: underline; }
   flex-wrap: wrap;
 }
 
+#precursor3-row {
+  max-width: 50%;
+}
+
 /* ===== PRECURSOR CARDS ===== */
 .precursor-card {
   flex: 1;
