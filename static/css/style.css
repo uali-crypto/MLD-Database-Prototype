@@ -508,7 +508,7 @@ a:hover { text-decoration: underline; }
   background: #eaf4fb;
   border: 1.5px solid #b6d9f0;
   border-radius: 14px;
-  padding: 1.25rem 1.5rem;
+  padding: 0.85rem 1rem;
 }
 
 /* ===== PROCESS / MATERIAL CARDS ===== */
@@ -518,7 +518,7 @@ a:hover { text-decoration: underline; }
   background: #fdf9ec;
   border: 1.5px solid #e8d99a;
   border-radius: 14px;
-  padding: 1.25rem 1.5rem;
+  padding: 0.85rem 1rem;
 }
 
 /* ===== CARD TITLE ===== */
@@ -535,7 +535,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-group label {
