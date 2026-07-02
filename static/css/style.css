@@ -491,8 +491,12 @@ a:hover { text-decoration: underline; }
 .doi-result-msg {
   font-size: 0.82rem;
   margin-top: 0;
-  min-height: 1em;
+  min-height: 0;
   flex-basis: 100%;
+}
+
+.doi-result-msg:empty {
+  display: none;
 }
 
 .doi-result-msg.error { color: #991b1b; }
