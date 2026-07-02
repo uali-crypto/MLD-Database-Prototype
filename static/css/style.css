@@ -550,7 +550,7 @@ a:hover { text-decoration: underline; }
   gap: 0.3rem;
 }
 
-.form-group input,
+.form-group input:not([type="checkbox"]),
 .form-group select,
 .form-group textarea {
   padding: 0.4rem 0.7rem;
@@ -622,17 +622,18 @@ a:hover { text-decoration: underline; }
 .checkbox-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.1rem;
+  gap: 0.2rem;
   font-size: 0.8rem;
   font-weight: 600;
   color: #1a1a2e;
   cursor: pointer;
   white-space: nowrap; 
-  margin-left: 0.1rem;
+  margin-left: 0.2rem;
 }
 
 .checkbox-label input[type="checkbox"] {
   width: auto;
+  flex: 0 0 auto;
   cursor: pointer;
   accent-color: #4a6fa5;
 }
