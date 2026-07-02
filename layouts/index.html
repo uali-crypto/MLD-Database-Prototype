@@ -846,14 +846,39 @@ async function lookupPubChem(name) {
     }
     document.getElementById("p2-dose-time").value = last.p2DoseTime;
     document.getElementById("p2-purge-time").value = last.p2PurgeTime;
-    // Clear material properties and process conditions
-    document.getElementById("growth-temp").value = "";
-    document.getElementById("growth-room-temp").checked = false;
-    document.getElementById("growth-temp").disabled = false;
-    document.getElementById("growth-per-cycle").value = "";
-    document.getElementById("inert-gas-flow").value = "";
-    document.getElementById("film-material").value = "";
-    document.getElementById("substrate").value = "";
+    // Copy over Process Conditions
+    if (last.growthTemp === "Room temp") {
+      document.getElementById("growth-room-temp").checked = true;
+      document.getElementById("growth-temp").disabled = true;
+    } else {
+      document.getElementById("growth-temp").value = last.growthTemp;
+    }
+    document.getElementById("growth-per-cycle").value = last.growthPerCycle;
+    document.getElementById("growth-per-cycle-unit").value = last.growthPerCycleUnit;
+    document.getElementById("inert-gas-flow").value = last.inertGasFlow;
+    // Handle film material (including "Other")
+    const filmMaterialSelect = document.getElementById("film-material");
+    const filmMaterialOptions = Array.from(filmMaterialSelect.options).map(o => o.value);
+    if (filmMaterialOptions.includes(last.filmMaterial)) {
+      filmMaterialSelect.value = last.filmMaterial;
+      document.getElementById("film-material-other-group").style.display = "none";
+    } else if (last.filmMaterial) {
+      filmMaterialSelect.value = "Other";
+      document.getElementById("film-material-other-group").style.display = "block";
+      document.getElementById("film-material-other").value = last.filmMaterial;
+    }
+    // Handle substrate (including "Other")
+    const substrateSelect = document.getElementById("substrate");
+    const substrateOptions = Array.from(substrateSelect.options).map(o => o.value);
+    if (substrateOptions.includes(last.substrate)) {
+      substrateSelect.value = last.substrate;
+      document.getElementById("substrate-other-group").style.display = "none";
+    } else if (last.substrate) {
+      substrateSelect.value = "Other";
+      document.getElementById("substrate-other-group").style.display = "block";
+      document.getElementById("substrate-other").value = last.substrate;
+    }
+    // Clear material properties and comments (these often differ per entry)
     document.getElementById("refractive-index").value = "";
     document.getElementById("elastic-modulus").value = "";
     document.getElementById("hardness").value = "";
