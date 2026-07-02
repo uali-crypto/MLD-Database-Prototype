@@ -572,8 +572,9 @@ a:hover { text-decoration: underline; }
   background: #fff;
   outline: none;
   transition: border-color 0.2s;
-  flex: 1;
+  flex: 0 1 200px;
   min-width: 120px;
+  max-width: 200px;
 }
 
 .form-group input:focus,
