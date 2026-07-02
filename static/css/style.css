@@ -562,7 +562,7 @@ a:hover { text-decoration: underline; }
   gap: 0.3rem;
 }
 
-.form-group input:not([type="checkbox"]),
+.form-group input:not([type="checkbox"]):not(.input-short),
 .form-group select,
 .form-group textarea {
   padding: 0.4rem 0.7rem;
@@ -630,7 +630,7 @@ a:hover { text-decoration: underline; }
 }
 
 .unit-select {
-  padding: 0.45rem 0.4rem;
+  padding: 0.45rem 0.3rem;
   border: 1.5px solid #c8d8e8;
   border-radius: 7px;
   font-size: 0.72rem;
