@@ -550,7 +550,7 @@ a:hover { text-decoration: underline; }
 
 .form-group label {
   flex: 0 0 150px;
-  font-size: 0.5rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #1a1a2e;
   display: flex;
@@ -614,7 +614,7 @@ a:hover { text-decoration: underline; }
   padding: 0.45rem 0.4rem;
   border: 1.5px solid #c8d8e8;
   border-radius: 7px;
-  font-size: 0.5rem;
+  font-size: 0.72rem;
   background: #fff;
   cursor: pointer;
   outline: none;
@@ -622,6 +622,13 @@ a:hover { text-decoration: underline; }
   max-width: 110px;
   flex-shrink: 1;
   min-width: 0;
+}
+
+.unit-label {
+  font-size: 0.72rem;
+  color: #1a1a2e;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .unit-select:focus { border-color: #4a6fa5; }
