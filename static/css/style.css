@@ -577,12 +577,6 @@ a:hover { text-decoration: underline; }
   max-width: 200px;
 }
 
-#bubbler-temperature1,
-#bubbler-temperature2, 
-#dose-time1,
-#dose-time2, 
-#purge-time1, 
-#purge-time2,
 #film-material,
 #substrate,
 #growth-temp,
@@ -630,7 +624,7 @@ a:hover { text-decoration: underline; }
 }
 
 .inline-input-row .input-short {
-  width: 90px;
+  width: 60px;
   min-width: 0;
   flex-shrink: 1;
 }
@@ -643,9 +637,9 @@ a:hover { text-decoration: underline; }
   background: #fff;
   cursor: pointer;
   outline: none;
-  width: auto;
-  max-width: 110px;
-  flex-shrink: 1;
+  width: 50px;
+  max-width: 50px;
+  flex-shrink: 0;
   min-width: 0;
 }
 
