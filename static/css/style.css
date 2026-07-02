@@ -577,6 +577,12 @@ a:hover { text-decoration: underline; }
   max-width: 200px;
 }
 
+#bubbler-temperature1,
+#bubbler-temperature2, 
+#dose-time1,
+#dose-time2, 
+#purge-time1, 
+#purge-time2,
 #film-material,
 #substrate,
 #growth-temp,
