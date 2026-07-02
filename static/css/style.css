@@ -575,6 +575,11 @@ a:hover { text-decoration: underline; }
   cursor: not-allowed;
 }
 
+.form-group .input-short {
+  flex: 0 0 90px;
+  width: 90px;
+}
+
 .form-group textarea {
   resize: vertical;
   min-height: 70px;
