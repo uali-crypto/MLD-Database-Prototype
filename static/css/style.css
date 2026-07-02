@@ -226,7 +226,7 @@ a:hover { text-decoration: underline; }
 
 .data-table th .sort-icon {
   margin-left: 0.3rem;
-  opacity: 0.5;
+  opacity: 1;
   font-size: 0.75rem;
 }
 
