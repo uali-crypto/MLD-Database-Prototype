@@ -492,8 +492,8 @@ a:hover { text-decoration: underline; }
 /* ===== CARDS ROW ===== */
 .cards-row {
   display: flex;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
@@ -508,7 +508,7 @@ a:hover { text-decoration: underline; }
   background: #eaf4fb;
   border: 1.5px solid #b6d9f0;
   border-radius: 14px;
-  padding: 0.85rem 1rem;
+  padding: 0.75rem 1rem;
 }
 
 /* ===== PROCESS / MATERIAL CARDS ===== */
@@ -518,15 +518,15 @@ a:hover { text-decoration: underline; }
   background: #fdf9ec;
   border: 1.5px solid #e8d99a;
   border-radius: 14px;
-  padding: 0.85rem 1rem;
+  padding: 0.75rem 1rem;
 }
 
 /* ===== CARD TITLE ===== */
 .card-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #1a1a2e;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   text-align: center;
 }
 
