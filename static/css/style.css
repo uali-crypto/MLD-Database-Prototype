@@ -416,7 +416,7 @@ a:hover { text-decoration: underline; }
   background: #fdf2f4;
   border: 1.5px solid #f4c2cc;
   border-radius: 12px;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
