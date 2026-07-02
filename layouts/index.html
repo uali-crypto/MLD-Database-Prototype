@@ -486,7 +486,7 @@
       document.getElementById("journal").value = journal;
 
       checkIcon.style.display = "inline";
-      confirmedText.textContent = `Confirmed: ${lastAuthor} et al. ${year} ${journal}`;
+      confirmedText.textContent = `Confirmed: ${firstAuthor} et al. ${year} ${journal}`;
       confirmedText.className = "doi-confirmed-text success";
       resultEl.textContent = "";
 
@@ -824,7 +824,7 @@ async function lookupPubChem(name) {
     // Update DOI confirmed text
     document.getElementById("doi-check-icon").style.display = "inline";
     document.getElementById("doi-confirmed-text").textContent =
-      `Confirmed: ${last.lastAuthor} et al. ${last.pubYear} ${last.journal}`;
+      `Confirmed: ${last.firstAuthor} et al. ${last.pubYear} ${last.journal}`;
     document.getElementById("doi-confirmed-text").className = "doi-confirmed-text success";
     // Precursor 1
     document.getElementById("precursor1").value = last.precursor1;

@@ -418,6 +418,10 @@ a:hover { text-decoration: underline; }
   border-radius: 12px;
   padding: 1rem 1.5rem;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .doi-label {
@@ -427,7 +431,8 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .doi-input-row {
@@ -435,6 +440,8 @@ a:hover { text-decoration: underline; }
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+  flex: 1;
+  min-width: 240px
 }
 
 .doi-input-row input {
@@ -483,8 +490,9 @@ a:hover { text-decoration: underline; }
 
 .doi-result-msg {
   font-size: 0.82rem;
-  margin-top: 0.4rem;
+  margin-top: 0;
   min-height: 1em;
+  flex-basis: 100%;
 }
 
 .doi-result-msg.error { color: #991b1b; }
