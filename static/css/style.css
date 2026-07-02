@@ -577,6 +577,20 @@ a:hover { text-decoration: underline; }
   max-width: 200px;
 }
 
+#film-material,
+#substrate,
+#growth-temp,
+#growth-per-cycle,
+#inert-gas-flow,
+#refractive-index,
+#elastic-modulus,
+#hardness,
+#density,
+#stability {
+  max-width: 100px;
+  width: 100px;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
