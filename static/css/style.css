@@ -592,8 +592,8 @@ a:hover { text-decoration: underline; }
   align-items: center;
   gap: 0.3rem;
   flex-wrap: nowrap;
-  max-width: 100%;
-  overflow: hidden;
+  flex: 1;
+  min-width: 0;
 }
 
 .inline-input-row .input-short {
@@ -627,7 +627,8 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
   color: #1a1a2e;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: nowrap; 
+  margin-left: 0.2rem;
 }
 
 .checkbox-label input[type="checkbox"] {
