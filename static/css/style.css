@@ -627,6 +627,17 @@ a:hover { text-decoration: underline; }
   width: 60px;
   min-width: 0;
   flex-shrink: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #c8d8e8;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inline-input-row .input-short:focus {
+  border-color: #4a6fa5;
 }
 
 .unit-select {
