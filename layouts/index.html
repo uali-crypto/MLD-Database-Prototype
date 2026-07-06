@@ -25,7 +25,7 @@
       <label for="doi" class="doi-label">
         Publication DOI
         <span class="required">*</span>
-        <span class="info-icon" data-tooltip="Enter the full DOI link or just the DOI string (e.g. 10.1021/...). Click Check DOI to auto-fill publication info.">ⓘ</span>
+        <span class="info-icon" data-tooltip="Each published paper has a unique DOI. Enter the full DOI link or just the DOI string (e.g. '10.1021//acs.chemmater.3c0,2519') or as a full address(e.g., https://doi.org/10.1021/acs.chemmater.3c02519).">ⓘ</span>
       </label>
       <div class="doi-input-row">
         <input type="text" id="doi" name="doi" placeholder="10.1021/acs.chemmater.3c02519" />
@@ -61,7 +61,7 @@
           <div class="form-group">
             <label for="p1-bubbler-temp">
               Bubbler temperature <span class="required">*</span>
-              <span class="info-icon" data-tooltip="The temperature of the precursor bubbler during deposition. Check 'Room temp?' if kept at ambient temperature.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Bubbler Temperature' is the temperature that the precursor container was heated to during film deposition. If the precursor container was not heated, select 'Room temp?'">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p1-bubbler-temp" name="p1-bubbler-temp" placeholder="e.g. 50" class="input-short" />
@@ -75,7 +75,7 @@
           <div class="form-group">
             <label for="p1-dose-time">
               Dose time (ms)
-              <span class="info-icon" data-tooltip="The time in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Dose Time' is the duration in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p1-dose-time" name="p1-dose-time" placeholder="e.g. 50" class="input-short" />
@@ -85,7 +85,7 @@
           <div class="form-group">
             <label for="p1-purge-time">
               Purge time (s) <span class="required">*</span>
-              <span class="info-icon" data-tooltip="The time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Purge Time' is the time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p1-purge-time" name="p1-purge-time" placeholder="e.g. 30" class="input-short" />
@@ -111,7 +111,7 @@
           <div class="form-group">
             <label for="p2-bubbler-temp">
               Bubbler temperature <span class="required">*</span>
-              <span class="info-icon" data-tooltip="The temperature of the precursor bubbler during deposition. Check 'Room temp?' if kept at ambient temperature.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Bubbler Temperature' is the temperature that the precursor container was heated to during film deposition. If the precursor container was not heated, select 'Room temp?'">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p2-bubbler-temp" name="p2-bubbler-temp" placeholder="e.g. 80" class="input-short" />
@@ -125,7 +125,7 @@
           <div class="form-group">
             <label for="p2-dose-time">
               Dose time (ms)
-              <span class="info-icon" data-tooltip="The time in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Dose Time' is the duration in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p2-dose-time" name="p2-dose-time" placeholder="e.g. 50" class="input-short" />
@@ -135,7 +135,7 @@
           <div class="form-group">
             <label for="p2-purge-time">
               Purge time (s) <span class="required">*</span>
-              <span class="info-icon" data-tooltip="The time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Purge Time' is the time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p2-purge-time" name="p2-purge-time" placeholder="e.g. 45" class="input-short" />
@@ -156,7 +156,7 @@
         <label class="checkbox-label">
           <input type="checkbox" id="precursor3-checkbox" name="precursor3-checkbox" />
           Precursor 3?
-          <span class="info-icon" data-tooltip="Check this if your process uses a third precursor, e.g. in a hybrid or ternary MLD process.">ⓘ</span>
+          <span class="info-icon" data-tooltip="Check this box if your process uses a third precursor.">ⓘ</span>
         </label>
       </div>
 
@@ -171,7 +171,7 @@
           <div class="form-group">
             <label for="p3-bubbler-temp">
               Bubbler temperature
-              <span class="info-icon" data-tooltip="The temperature of the precursor bubbler during deposition. Check 'Room temp?' if kept at ambient temperature.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Bubbler Temperature' is the temperature that the precursor container was heated to during film deposition. If the precursor container was not heated, select 'Room temp?'">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p3-bubbler-temp" name="p3-bubbler-temp" placeholder="e.g. 25" class="input-short" />
@@ -185,7 +185,7 @@
           <div class="form-group">
             <label for="p3-dose-time">
               Dose time (ms)
-              <span class="info-icon" data-tooltip="The time in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Dose Time' is the duration in milliseconds that the precursor valve is open during each ALD/MLD cycle.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p3-dose-time" name="p3-dose-time" placeholder="e.g. 50" class="input-short" />
@@ -195,7 +195,7 @@
           <div class="form-group">
             <label for="p3-purge-time">
               Purge time (s)
-              <span class="info-icon" data-tooltip="The time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Purge Time' is the time in seconds for purging excess precursor and byproducts after each dose.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="p3-purge-time" name="p3-purge-time" placeholder="e.g. 30" class="input-short" />
@@ -274,7 +274,7 @@
           <div class="form-group">
             <label for="growth-per-cycle">
               Growth per cycle
-              <span class="info-icon" data-tooltip="The thickness or mass gained per MLD cycle. Select the appropriate unit.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Growth per cycle' is the thickness or mass gained per MLD cycle. Select the appropriate unit.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="growth-per-cycle" name="growth-per-cycle" placeholder="e.g. 1.5" class="input-short" />
@@ -287,7 +287,7 @@
           <div class="form-group">
             <label for="inert-gas-flow">
               Inert gas flow
-              <span class="info-icon" data-tooltip="The flow rate of the inert carrier gas (e.g. N₂ or Ar) used during deposition, in standard cubic centimetres per minute.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Inert gas flow' is the flow rate of the inert carrier gas (e.g. N₂ or Ar) used during deposition, in standard cubic centimetres per minute.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="inert-gas-flow" name="inert-gas-flow" placeholder="e.g. 50" class="input-short" />
@@ -333,7 +333,7 @@
           <div class="form-group">
             <label for="stability">
               Stability in air
-              <span class="info-icon" data-tooltip="The rate of film thickness reduction when exposed to ambient air, expressed as percentage thickness loss per day.">ⓘ</span>
+              <span class="info-icon" data-tooltip="'Stability in air' is the rate of film thickness reduction when exposed to ambient air, expressed as percentage thickness loss per day.">ⓘ</span>
             </label>
             <div class="inline-input-row">
               <input type="text" id="stability" name="stability" placeholder="e.g. 3.67" class="input-short" />
@@ -348,7 +348,7 @@
       <div class="comments-section">
         <label for="other-comments">
           Other Comments:
-          <span class="info-icon" data-tooltip="Any additional information about the deposition process or film properties not captured by the fields above.">ⓘ</span>
+          <span class="info-icon" data-tooltip="'Other Comments' is a field for any additional information about the deposition process or film properties not captured by the fields above.">ⓘ</span>
         </label>
         <textarea id="other-comments" name="other-comments" rows="4" placeholder="Any additional notes..."></textarea>
       </div>

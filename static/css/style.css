@@ -832,7 +832,7 @@ a:hover { text-decoration: underline; }
 
 /* ===== ORCID RESULT ===== */
 .orcid-result {
-  font-size: 0.82rem;
+  font-size: 0.90rem;
   margin-top: 0.3rem;
   min-height: 1.2em;
 }
