@@ -563,7 +563,7 @@ a:hover { text-decoration: underline; }
 }
 
 .form-group input:not([type="checkbox"]):not(.input-short),
-.form-group select,
+.form-group select:not(.unit-select),
 .form-group textarea {
   padding: 0.4rem 0.7rem;
   border: 1.5px solid #c8d8e8;
@@ -582,7 +582,6 @@ a:hover { text-decoration: underline; }
 #growth-temp,
 #growth-per-cycle,
 #inert-gas-flow,
-#refractive-index,
 #elastic-modulus,
 #hardness,
 #density,
@@ -597,10 +596,6 @@ a:hover { text-decoration: underline; }
   border-color: #4a6fa5;
 }
 
-.form-group .input-short {
-  flex: 0 0 90px;
-  width: 90px;
-}
 
 .form-group input:disabled {
   background: #f0f0f0;
@@ -623,22 +618,6 @@ a:hover { text-decoration: underline; }
   min-width: 0;
 }
 
-.inline-input-row .input-short {
-  width: 60px;
-  min-width: 0;
-  flex-shrink: 1;
-  padding: 0.4rem 0.6rem;
-  border: 1.5px solid #c8d8e8;
-  border-radius: 7px;
-  font-size: 0.85rem;
-  background: #fff;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.inline-input-row .input-short:focus {
-  border-color: #4a6fa5;
-}
 
 .unit-select {
   padding: 0.45rem 0.3rem;
@@ -662,6 +641,23 @@ a:hover { text-decoration: underline; }
 }
 
 .unit-select:focus { border-color: #4a6fa5; }
+
+.input-short {
+  width: 90px;
+  min-width: 0;
+  flex-shrink: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #c8d8e8;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-short:focus {
+  border-color: #4a6fa5;
+}
 
 /* ===== CHECKBOX LABEL ===== */
 .checkbox-label {
