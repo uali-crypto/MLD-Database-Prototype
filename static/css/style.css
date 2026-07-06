@@ -413,8 +413,8 @@ a:hover { text-decoration: underline; }
 
 /* ===== DOI BANNER ===== */
 .doi-banner {
-  background: #fdf2f4;
-  border: 1.5px solid #f4c2cc;
+  background: #f1d3ed;
+  border: 1.5px solid #bc5b93;
   border-radius: 12px;
   padding: 1rem 1.5rem;
   margin-bottom: 1.5rem;
