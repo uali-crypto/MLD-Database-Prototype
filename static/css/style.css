@@ -837,7 +837,7 @@ a:hover { text-decoration: underline; }
   min-height: 1.2em;
 }
 
-.orcid-result.success { color: #166534; }
+.orcid-result.success { color: #fff; }
 .orcid-result.error { color: #991b1b; }
 
 /* ===== MODAL ===== */
