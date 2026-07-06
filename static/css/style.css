@@ -586,7 +586,7 @@ a:hover { text-decoration: underline; }
 #hardness,
 #density,
 #stability {
-  max-width: 150px;
+  max-width: 180px;
   width: 100px;
 }
 
