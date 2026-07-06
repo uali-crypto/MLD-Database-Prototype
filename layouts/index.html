@@ -1,9 +1,5 @@
 {{ define "main" }}
 <section class="form-container">
-  <!-- Instruction Text -->
-  <div class="form-instructions">
-    <p><strong>Enter information for each unique film. A single paper may have multiple entries (e.g. different chemistries or growth temperatures).</strong></p>
-  </div>
 
   <!-- ORCID Login Screen -->
   <div id="orcid-login-screen">
@@ -19,6 +15,10 @@
   <!-- Main Form (hidden until logged in) -->
   <div id="mld-form-wrapper" style="display:none;">
     <div class="orcid-user-banner" id="orcid-user-banner"></div>
+
+    <div class="form-instructions">
+    <p><strong>Enter information for each unique film. A single paper may have multiple entries (e.g. different chemistries or growth temperatures).</strong></p>
+  </div>
 
     <!-- DOI Banner -->
     <div class="doi-banner">
