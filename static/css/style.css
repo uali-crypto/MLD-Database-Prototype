@@ -627,8 +627,8 @@ a:hover { text-decoration: underline; }
   background: #fff;
   cursor: pointer;
   outline: none;
-  width: 50px;
-  max-width: 50px;
+  width: 60px;
+  max-width: 60px;
   flex-shrink: 0;
   min-width: 0;
 }
