@@ -553,7 +553,7 @@ a:hover { text-decoration: underline; }
 }
 
 .form-group label {
-  flex: 0 0 150px;
+  flex: 0 0 170px;
   font-size: 0.82rem;
   font-weight: 600;
   color: #1a1a2e;
