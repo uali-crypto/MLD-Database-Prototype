@@ -369,7 +369,7 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   border: 1px solid #e8ecf3;
   padding: 3rem 2rem;
-  text-align: center;
+  text-align: left;
   max-width: 500px;
   margin: 3rem auto;
 }
