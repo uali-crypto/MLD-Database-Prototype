@@ -404,6 +404,7 @@ a:hover { text-decoration: underline; }
 .orcid-user-text {
   font-size: 0.9rem;
   color: #000000;
+  margin-bottom: 1.5rem;
 }
 
 /* ===== DOI BANNER ===== */
