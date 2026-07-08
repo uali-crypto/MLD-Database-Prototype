@@ -776,12 +776,22 @@ a:hover { text-decoration: underline; }
 .comments-section textarea:focus { border-color: #4a6fa5; }
 
 /* ===== FORM ACTIONS ===== */
+.comments-actions-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.comments-section {
+  flex: 1;
+}
+
 .form-actions {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
   align-items: flex-end;
   gap: 0.75rem;
-  margin-top: 1rem;
 }
 
 .action-buttons {
