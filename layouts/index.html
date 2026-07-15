@@ -402,6 +402,7 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
 <script>
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzU2SM9co2mlBX4TD11A9TuX--AL0XfFIcC7AprrJ9Dlx8adl7oZKAg9AhHNVBRUMf7bQ/exec";
 
@@ -497,67 +498,133 @@
     }
   });
 
-// ===== SMILES CLASSIFICATION RULES =====
-const CLASSIFICATION_RULES = [
-  { name: "Organometallic", ligandType: "methyl", pattern: (s) => /\[Al\]/.test(s) && /C\[Al\]|^\[Al\](C)/.test(s) },
-  { name: "Organometallic", ligandType: "ethyl", pattern: (s) => /\[Zn\]/.test(s) && /CC\[Zn\]/.test(s) },
-  { name: "Organometallic", ligandType: "chlorine", pattern: (s) => /\[Ti\]/.test(s) && /Cl/.test(s) },
-  { name: "Organometallic", ligandType: "dimethylamino", pattern: (s) => /\[Sn\]/.test(s) && /N\(C\)C/.test(s) },
-  { name: "Organometallic", ligandType: "unknown", pattern: (s) => /\[Al\]|\[Ti\]|\[Zn\]|\[Sn\]|\[Cu\]|\[Fe\]|\[Co\]|\[Ni\]|\[Hf\]|\[Zr\]/.test(s) },
-  { name: "Aromatic isocyanate", ligandType: "isocyanate", pattern: (s) => /N=C=O/.test(s) && /c1/.test(s) },
-  { name: "Aliphatic isocyanate", ligandType: "isocyanate", pattern: (s) => /N=C=O/.test(s) && !/c1/.test(s) },
-  { name: "Aromatic isothiocyanate", ligandType: "isothiocyanate", pattern: (s) => /N=C=S/.test(s) && /c1/.test(s) },
-  { name: "Aliphatic isothiocyanate", ligandType: "isothiocyanate", pattern: (s) => /N=C=S/.test(s) && !/c1/.test(s) },
-  { name: "Aromatic acyl chloride", ligandType: "acyl chloride", pattern: (s) => /C\(=O\)Cl/.test(s) && /c1/.test(s) },
-  { name: "Aliphatic acyl chloride", ligandType: "acyl chloride", pattern: (s) => /C\(=O\)Cl/.test(s) && !/c1/.test(s) },
-  { name: "Aromatic anhydride", ligandType: "anhydride", pattern: (s) => /C\(=O\)OC\(=O\)/.test(s) && /c1/.test(s) },
-  { name: "Aliphatic anhydride", ligandType: "anhydride", pattern: (s) => /C\(=O\)OC\(=O\)/.test(s) && !/c1/.test(s) },
-  { name: "Aromatic aldehyde", ligandType: "aldehyde", pattern: (s) => /C=O/.test(s) && /c1/.test(s) && !/C\(=O\)Cl/.test(s) && !/C\(=O\)OC\(=O\)/.test(s) },
-  { name: "Aliphatic aldehyde", ligandType: "aldehyde", pattern: (s) => /C=O/.test(s) && !/c1/.test(s) && !/C\(=O\)Cl/.test(s) && !/C\(=O\)OC\(=O\)/.test(s) },
-  { name: "Aromatic amine", ligandType: "amine", pattern: (s) => /N/.test(s) && /c1/.test(s) && !/N=C=O/.test(s) && !/N=C=S/.test(s) && !/N\(C\)C/.test(s) },
-  { name: "Aliphatic amine", ligandType: "amine", pattern: (s) => /^N|NCC|CCN|NCCCC|NCCN/.test(s) && !/c1/.test(s) && !/N=C=O/.test(s) && !/N=C=S/.test(s) },
-  { name: "Aromatic alcohol", ligandType: "hydroxyl", pattern: (s) => /Oc1|c1.*O|OC.*c1/.test(s) && !/C\(=O\)/.test(s) },
-  { name: "Aliphatic alcohol", ligandType: "hydroxyl", pattern: (s) => /OCCO|OCC|C\(O\)|C\(CO\)|CCO|COC/.test(s) && !/c1/.test(s) && !/C\(=O\)/.test(s) },
-];
+  let RDKit = null;
+  let rdkitLoadPromise = null;
 
-// ===== FUNCTIONAL GROUP COUNTERS =====
-const FUNCTIONAL_GROUP_COUNTERS = {
-  "isocyanate":     (s) => (s.match(/N=C=O/g) || []).length,
-  "isothiocyanate": (s) => (s.match(/N=C=S/g) || []).length,
-  "acyl chloride":  (s) => (s.match(/C\(=O\)Cl/g) || []).length,
-  "anhydride":      (s) => (s.match(/C\(=O\)OC\(=O\)/g) || []).length,
-  "aldehyde":       (s) => (s.match(/C=O/g) || []).length,
-  "amine":          (s) => (s.match(/(?<![=])N(?!([=]|[A-Z]))/g) || []).length,
-  "hydroxyl":       (s) => (s.match(/(?<![A-Z])O(?![A-Z=])|O(?=C)|(?<=C)O/g) || []).length,
-  "methyl":         (s) => (s.match(/C\[Al\]|(?<=\[Al\]\()C(?=\))/g) || []).length,
-  "ethyl":          (s) => (s.match(/CC\[Zn\]/g) || []).length,
-  "chlorine":       (s) => (s.match(/Cl/g) || []).length,
-  "dimethylamino":  (s) => (s.match(/N\(C\)C/g) || []).length,
-};
-
-// ===== SMILES CLASSIFIER FUNCTION =====
-function classifySmiles(smiles) {
-  if (!smiles) return { precursorClass: "", ligandType: "", functionalGroups: "" };
-  const detectedClasses = [];
-  const detectedLigands = [];
-  for (const rule of CLASSIFICATION_RULES) {
-    try {
-      if (rule.pattern(smiles)) {
-        if (!detectedClasses.includes(rule.name)) detectedClasses.push(rule.name);
-        if (!detectedLigands.includes(rule.ligandType)) detectedLigands.push(rule.ligandType);
+  function loadRDKit() {
+    if (!rdkitLoadPromise) {
+      const statusEl = document.getElementById("form-status");
+      if (statusEl) {
+        statusEl.textContent = "Loading chemistry engine (first time only)...";
+        statusEl.className = "form-status";
       }
-    } catch(e) { continue; }
+      rdkitLoadPromise = initRDKitModule().then((instance) => {
+        RDKit = instance;
+        return instance;
+      });
+    }
+    return rdkitLoadPromise;
   }
-  if (detectedClasses.length === 0) return { precursorClass: "", ligandType: "", functionalGroups: "" };
-  let totalCount = 0;
-  for (const ligand of detectedLigands) {
-    if (FUNCTIONAL_GROUP_COUNTERS[ligand]) totalCount += FUNCTIONAL_GROUP_COUNTERS[ligand](smiles);
-  }
-  return {
-    precursorClass: detectedClasses.join(", "),
-    ligandType: detectedLigands.join(", "),
-    functionalGroups: totalCount > 0 ? String(totalCount) : ""
+
+  const METALS = ["Al","Ti","Zn","Sn","Cu","Fe","Co","Ni","Hf","Zr"];
+  const METAL_LIST = METALS.join(",");
+
+  const GROUP_SMARTS = {
+    metal:            `[${METAL_LIST}]`,
+    methylOnAl:       "[Al][CH3]",
+    ethylOnZn:        "[Zn][CH2][CH3]",
+    chlorineOnTi:     "[Ti]Cl",
+    dimethylaminoOnSn:"[Sn][NX3](C)C",
+    isocyanate:       "[NX2]=[CX2]=[OX1]",
+    isothiocyanate:   "[NX2]=[CX2]=[SX1]",
+    "acyl chloride":  "[CX3](=[OX1])Cl",
+    anhydride:        "[CX3](=[OX1])[OX2][CX3](=[OX1])",
+    aldehyde:         "[CX3H1]=[OX1]",
+    amine:            `[NX3;!$(NC=[OX1]);!$(N=*);!$([N][${METAL_LIST}])]`,
+    hydroxyl:         "[OX2H;!$(OC=[OX1])]",
   };
+
+  let QUERY_CACHE = null;
+
+  function buildQueryCache() {
+    QUERY_CACHE = {};
+    for (const [key, smarts] of Object.entries(GROUP_SMARTS)) {
+      const q = RDKit.get_qmol(smarts);
+      if (!q || !q.is_valid()) {
+        console.error("Invalid SMARTS pattern:", key, smarts);
+        continue;
+      }
+      QUERY_CACHE[key] = q;
+    }
+  }
+
+  function countMatches(mol, key) {
+    const query = QUERY_CACHE[key];
+    if (!query) return 0;
+    const json = mol.get_substruct_matches(query);
+    const matches = JSON.parse(json);
+    return Array.isArray(matches) ? matches.length : 0;
+  }
+
+  function hasMatch(mol, key) {
+    return countMatches(mol, key) > 0;
+  }
+
+  function isAromaticMolecule(mol) {
+    try {
+      const descriptors = JSON.parse(mol.get_descriptors());
+      // NOTE: confirm this key name against your installed RDKit.js version
+      // by logging `descriptors` once — it may be NumAromaticRings or similar.
+      return (descriptors.NumAromaticRings || 0) > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  async function classifySmiles(smiles) {
+  if (!smiles) return { precursorClass: "", ligandType: "", functionalGroups: "" };
+
+  await loadRDKit();
+  if (!QUERY_CACHE) buildQueryCache();
+
+  const mol = RDKit.get_mol(smiles);
+  if (!mol || !mol.is_valid()) {
+    if (mol) mol.delete();
+    return { precursorClass: "", ligandType: "", functionalGroups: "" };
+  }
+
+  try {
+    const detectedClasses = [];
+    const detectedLigands = [];
+    let totalCount = 0;
+
+    const addResult = (className, ligandType, key) => {
+      if (!detectedClasses.includes(className)) detectedClasses.push(className);
+      if (!detectedLigands.includes(ligandType)) detectedLigands.push(ligandType);
+      totalCount += countMatches(mol, key);
+    };
+
+    if (hasMatch(mol, "metal")) {
+      if (hasMatch(mol, "methylOnAl")) addResult("Organometallic", "methyl", "methylOnAl");
+      if (hasMatch(mol, "ethylOnZn")) addResult("Organometallic", "ethyl", "ethylOnZn");
+      if (hasMatch(mol, "chlorineOnTi")) addResult("Organometallic", "chlorine", "chlorineOnTi");
+      if (hasMatch(mol, "dimethylaminoOnSn")) addResult("Organometallic", "dimethylamino", "dimethylaminoOnSn");
+      if (detectedClasses.length === 0) addResult("Organometallic", "unknown", "metal");
+    }
+
+    const aromatic = isAromaticMolecule(mol);
+    const prefix = aromatic ? "Aromatic" : "Aliphatic";
+
+    if (hasMatch(mol, "isocyanate")) addResult(`${prefix} isocyanate`, "isocyanate", "isocyanate");
+    if (hasMatch(mol, "isothiocyanate")) addResult(`${prefix} isothiocyanate`, "isothiocyanate", "isothiocyanate");
+    if (hasMatch(mol, "acyl chloride")) addResult(`${prefix} acyl chloride`, "acyl chloride", "acyl chloride");
+    if (hasMatch(mol, "anhydride")) addResult(`${prefix} anhydride`, "anhydride", "anhydride");
+    if (hasMatch(mol, "aldehyde")) addResult(`${prefix} aldehyde`, "aldehyde", "aldehyde");
+    if (hasMatch(mol, "amine")) addResult(`${prefix} amine`, "amine", "amine");
+    if (hasMatch(mol, "hydroxyl")) addResult(`${prefix} alcohol`, "hydroxyl", "hydroxyl");
+
+    if (detectedClasses.length === 0) {
+      return { precursorClass: "", ligandType: "", functionalGroups: "" };
+    }
+
+    return {
+      precursorClass: detectedClasses.join(", "),
+      ligandType: detectedLigands.join(", "),
+      functionalGroups: totalCount > 0 ? String(totalCount) : "",
+    };
+  } finally {
+    mol.delete();
+  }
 }
 
 // ===== PUBCHEM SMILES LOOKUP =====
@@ -580,7 +647,7 @@ async function lookupPubChem(name) {
                    data.PropertyTable?.Properties?.[0]?.SMILES ||
                    data.PropertyTable?.Properties?.[0]?.CanonicalSMILES || "";
     console.log("SMILES found:", smiles);
-    const classification = classifySmiles(smiles);
+    const classification = await classifySmiles(smiles);
     console.log("Classification:", classification);
     return { smiles, classification };
   } catch (err) {
