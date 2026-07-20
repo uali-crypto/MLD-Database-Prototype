@@ -86,7 +86,6 @@ function buildColumnDefs(config) {
     if (col.type === "select") {
       def.headerFilter = "list";
       def.headerFilterParams = { valuesLookup: true, clearable: true };
-      def.headerFilterFunc = "=";
     } else if (col.type === "number") {
       def.headerFilter = "input";
       def.hozAlign = "right";
@@ -147,6 +146,10 @@ async function init() {
     });
     document.getElementById("toggle-columns").textContent =
       showAllColumns ? "Show Fewer Columns" : "Show More Columns";
+  });
+
+    document.getElementById("clear-filters").addEventListener("click", () => {
+        table.clearHeaderFilter();
   });
 }
 
