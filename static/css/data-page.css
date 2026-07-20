@@ -1,46 +1,97 @@
-.data-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.process-toggle {
-  display: flex;
-  gap: 0.5rem;
+.chart-periodic {
   margin-bottom: 1rem;
+  overflow-x: auto;
 }
 
-.toggle-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  cursor: pointer;
+.pt-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(42px, 1fr));
+  gap: 2px;
+  margin: 0 auto;
+}
+
+.pt-lanthanide-grid {
+  display: grid;
+  grid-template-columns: repeat(15, minmax(42px, 1fr));
+  gap: 2px;
+  margin: 0.25rem auto 1rem;
+}
+
+.pt-lanthanide-label {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.pt-cell {
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 0.9rem;
+  background: #fafafa;
+  min-height: 54px;
+  padding: 2px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.toggle-btn.active {
-  background: #2c7be5;
-  color: #fff;
+.pt-cell.pt-has-data {
+  background: #fff;
   border-color: #2c7be5;
 }
 
-.chart-container {
-  margin-bottom: 1rem;
+.pt-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-style: italic;
+  font-size: 0.7rem;
+}
+
+.pt-number {
+  font-size: 0.6rem;
+  color: #999;
+}
+
+.pt-symbol {
+  font-size: 0.85rem;
+  font-weight: bold;
   text-align: center;
 }
 
-.chart-image {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.pt-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
 }
 
-.table-controls {
-  margin-bottom: 0.5rem;
+.pt-tag {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-#data-table {
+.pt-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
   margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.pt-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pt-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
 }

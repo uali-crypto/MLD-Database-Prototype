@@ -415,7 +415,7 @@
 
 <script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
 <script>
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzU2SM9co2mlBX4TD11A9TuX--AL0XfFIcC7AprrJ9Dlx8adl7oZKAg9AhHNVBRUMf7bQ/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxC7Zvjmy9CKP4T4lP1XJm_m2WLz59UqPQGtFo1aMYPyJCUNg9WdQYNhY0KlpaoeiDTyQ/exec";
 
   
   document.querySelectorAll(".info-icon").forEach(icon => {
@@ -543,6 +543,8 @@
     aldehyde:         "[CX3H1]=[OX1]",
     amine:            `[NX3;!$(NC=[OX1]);!$(N=*);!$([N][${METAL_LIST}])]`,
     hydroxyl:         "[OX2H;!$(OC=[OX1])]",
+    carboxylicAcid:   "[CX3](=O)[OX2H1]",
+    thiol:            "[SX2H]",
   };
 
   let QUERY_CACHE = null;
@@ -583,7 +585,7 @@
   }
 
   async function classifySmiles(smiles) {
-  if (!smiles) return { precursorClass: "", ligandType: "", functionalGroups: "" };
+  if (!smiles) return { precursorClass: "", ligandType: "", functionalGroups: "", metalSymbol: "" };
 
   await loadRDKit();
   if (!QUERY_CACHE) buildQueryCache();
@@ -591,10 +593,11 @@
   const mol = RDKit.get_mol(smiles);
   if (!mol || !mol.is_valid()) {
     if (mol) mol.delete();
-    return { precursorClass: "", ligandType: "", functionalGroups: "" };
+    return { precursorClass: "", ligandType: "", functionalGroups: "", metalSymbol: "" };
   }
 
   try {
+    const metalSymbol = getMetalSymbolFromMol(mol) || "";
     const detectedClasses = [];
     const detectedLigands = [];
     let totalCount = 0;
@@ -623,15 +626,18 @@
     if (hasMatch(mol, "aldehyde")) addResult(`${prefix} aldehyde`, "aldehyde", "aldehyde");
     if (hasMatch(mol, "amine")) addResult(`${prefix} amine`, "amine", "amine");
     if (hasMatch(mol, "hydroxyl")) addResult(`${prefix} alcohol`, "hydroxyl", "hydroxyl");
+    if (hasMatch(mol, "carboxylicAcid")) addResult(`${prefix} carboxylic acid`, "carboxylic acid", "carboxylicAcid");
+    if (hasMatch(mol, "thiol")) addResult(`${prefix} thiol`, "thiol", "thiol");
 
     if (detectedClasses.length === 0) {
-      return { precursorClass: "", ligandType: "", functionalGroups: "" };
+      return { precursorClass: "", ligandType: "", functionalGroups: "", metalSymbol: ""  };
     }
 
     return {
       precursorClass: detectedClasses.join(", "),
       ligandType: detectedLigands.join(", "),
       functionalGroups: totalCount > 0 ? String(totalCount) : "",
+      metalSymbol,
     };
   } finally {
     mol.delete();
@@ -729,9 +735,9 @@ async function lookupPubChem(name) {
       stability:         document.getElementById("stability").value.trim(),
       otherComments:     document.getElementById("other-comments").value.trim(),
       
-      smiles1: "", p1Class: "", p1LigandType: "", p1FunctionalGroups: "",
-      smiles2: "", p2Class: "", p2LigandType: "", p2FunctionalGroups: "",
-      smiles3: "", p3Class: "", p3LigandType: "", p3FunctionalGroups: "",
+      smiles1: "", p1Class: "", p1LigandType: "", p1FunctionalGroups: "", p1MetalSymbol: "",
+      smiles2: "", p2Class: "", p2LigandType: "", p2FunctionalGroups: "", p2MetalSymbol: "",
+      smiles3: "", p3Class: "", p3LigandType: "", p3FunctionalGroups: "", p3MetalSymbol: "",
     };
   }
 
@@ -865,17 +871,20 @@ async function lookupPubChem(name) {
     pendingEntryData.p1Class = results[0].classification.precursorClass || "";
     pendingEntryData.p1LigandType = results[0].classification.ligandType || "";
     pendingEntryData.p1FunctionalGroups = results[0].classification.functionalGroups || "";
-
+    pendingEntryData.p1MetalSymbol = results[0].classification.metalSymbol || "";
+    
     pendingEntryData.smiles2 = results[1].smiles;
     pendingEntryData.p2Class = results[1].classification.precursorClass || "";
     pendingEntryData.p2LigandType = results[1].classification.ligandType || "";
     pendingEntryData.p2FunctionalGroups = results[1].classification.functionalGroups || "";
+    pendingEntryData.p2MetalSymbol = results[1].classification.metalSymbol || "";
 
     if (p3enabled && results[2]) {
       pendingEntryData.smiles3 = results[2].smiles;
       pendingEntryData.p3Class = results[2].classification.precursorClass || "";
       pendingEntryData.p3LigandType = results[2].classification.ligandType || "";
       pendingEntryData.p3FunctionalGroups = results[2].classification.functionalGroups || "";
+      pendingEntryData.p3MetalSymbol = results[2].classification.metalSymbol || "";
     }
 
     entryQueue.push(pendingEntryData);

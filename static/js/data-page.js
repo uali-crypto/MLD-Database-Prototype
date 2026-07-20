@@ -116,12 +116,13 @@ function processFilter(data) {
 
 function setMode(mode) {
   currentMode = mode;
-  document.getElementById("chart-hybrid").style.display = mode === "hybrid" ? "block" : "none";
+  document.getElementById("periodic-table-chart").style.display = mode === "hybrid" ? "block" : "none";
   document.getElementById("chart-organic").style.display = mode === "all-organic" ? "block" : "none";
   document.getElementById("toggle-hybrid").classList.toggle("active", mode === "hybrid");
   document.getElementById("toggle-organic").classList.toggle("active", mode === "all-organic");
   if (table) table.refreshFilter();
 }
+
 
 // ===== PERIODIC TABLE: ELEMENT LAYOUT =====
 const ELEMENTS = [
