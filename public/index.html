@@ -547,6 +547,10 @@
     thiol:            "[SX2H]",
   };
 
+  METALS.forEach(metal => {
+    GROUP_SMARTS[`metal_${metal}`] = `[${metal}]`;
+  });
+
   let QUERY_CACHE = null;
 
   function buildQueryCache() {
@@ -582,6 +586,13 @@
     } catch {
       return false;
     }
+  }
+
+  function getMetalSymbolFromMol(mol) {
+    for (const metal of METALS) {
+      if (hasMatch(mol, `metal_${metal}`)) return metal;
+    }
+    return null;
   }
 
   async function classifySmiles(smiles) {

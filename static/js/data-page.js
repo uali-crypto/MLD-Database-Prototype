@@ -143,13 +143,13 @@ const ELEMENTS = [
 
 // ===== PERIODIC TABLE: FUNCTIONAL GROUP COLORS (Okabe-Ito colorblind-safe palette) =====
 const FUNCTIONAL_GROUP_COLORS = {
-  alcohol: "#0072B2",
-  amine: "#E69F00",
-  carboxylic: "#009E73",
-  thiol: "#F0E442",
-  anhydride: "#CC79A7",
-  ringopening: "#56B4E9",
-  other: "#D55E00"
+  alcohol: "#4477AA",
+  amine: "#66CCEE",
+  carboxylic: "#228833",
+  thiol: "#CCBB44",
+  anhydride: "#EE6677",
+  ringopening: "#AA3377",
+  other: "#BBBBBB"
 };
 
 const FUNCTIONAL_GROUP_LABELS = {
