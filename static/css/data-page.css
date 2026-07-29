@@ -1,96 +1,271 @@
+.data-page {
+  background-color: #dee0e1;
+}
+
 .chart-periodic {
   margin-bottom: 1rem;
   overflow-x: auto;
 }
 
-.pt-grid {
-  display: grid;
-  grid-template-columns: repeat(18, minmax(42px, 1fr));
-  gap: 2px;
+.pt-outer {
+  width: max-content;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
-.pt-lanthanide-grid {
+.pt-wrapper {
   display: grid;
-  grid-template-columns: repeat(15, minmax(42px, 1fr));
+  grid-template-columns: repeat(18, 58px);
+  grid-auto-rows: 62px;
+  align-items: start;
   gap: 2px;
-  margin: 0.25rem auto 1rem;
+  width: max-content;
 }
 
-.pt-lanthanide-label {
+.pt-column-label {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 100%;
   text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #888;
 }
 
 .pt-cell {
+  position: relative;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  background: #fafafa;
-  min-height: 54px;
-  padding: 2px 4px;
+  border-radius: 3px;
+  background: #fff;
+  height: 62px;
+  padding: 2px 3px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-}
-
-.pt-cell.pt-has-data {
-  background: #fff;
+  align-items: center;
 }
 
 .pt-placeholder {
-  display: flex;
   align-items: center;
   justify-content: center;
   color: #999;
   font-style: italic;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 .pt-number {
+  position: absolute;
+  top: 2px;
+  left: 3px;
   font-size: 0.6rem;
   color: #999;
 }
 
 .pt-symbol {
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+  margin-top: 14px;
 }
 
-.pt-tags {
+.pt-swatch-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
+  margin-top: auto;
   justify-content: center;
 }
 
-.pt-tag {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.pt-swatch {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
   display: inline-block;
 }
 
-.pt-legend {
+.pt-lanthanide-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 4px;
+  width: max-content;
+}
+
+.pt-lanthanide-label {
+  width: 80px;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: #666;
+  padding-top: 20px;
+}
+
+.pt-lanthanide-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 58px);
+  gap: 2px;
+}
+
+.pt-cell.pt-has-data {
+  cursor: pointer;
+}
+
+.pt-cell.pt-selected {
+  outline: 2px solid #333;
+  outline-offset: -1px;
+}
+
+/* ===== Diagram / legend box ===== */
+.pt-diagram {
+  box-sizing: border-box;
+  height: 158px;
+  width: 90%;
+  justify-self: center;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: #dee0e1;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  overflow: visible;
+}
+
+.pt-diagram-visual {
+  position: relative;
+  width: 58px;
+  flex-shrink: 0;
+}
+
+.pt-diagram-cell {
+  width: 58px;
+  height: 62px;
+}
+
+.pt-diagram-labels {
+  position: absolute;
+  left: 60px;
+  top: 0;
+  width: 220px;
+}
+
+.pt-diagram-label {
+  position: absolute;
+  left: 0;
+  font-size: 0.75rem;
+  color: #333;
+  padding-left: 14px;
+}
+
+.pt-diagram-tick {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  border-top: 1px solid #333;
+}
+
+.pt-diagram-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  margin-top: 1rem;
-  font-size: 0.85rem;
+  align-content: flex-start;
+  gap: 0.4rem 1.25rem;
+  padding-left: 260px;
 }
 
 .pt-legend-item {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  font-size: 0.70rem;
+  white-space: nowrap;
 }
 
 .pt-legend-swatch {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 2px;
   display: inline-block;
+}
+
+.element-filter-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #eef3fb;
+  border: 1px solid #b7cbe8;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.element-filter-banner button {
+  margin-left: auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  line-height: 1;
+}
+
+.element-filter-banner button:hover {
+  color: #000;
+}
+
+/*all-organic chart*/
+.organic-grid {
+  display: grid;
+  grid-template-columns: 140px repeat(5, 140px);
+  gap: 6px;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.organic-header {
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nucleophile-header {
+  background: #eee;
+}
+
+.organic-cell {
+  border: 2px solid var(--organic-color, #ccc);
+  border-radius: 4px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  background: color-mix(in srgb, var(--organic-color, #ccc) 25%, white);
+}
+
+.organic-cell.organic-active {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.organic-cell.organic-active:hover {
+  filter: brightness(0.95);
+}
+
+.organic-cell.organic-greyed {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #aaa;
+}
+
+.organic-cell.selected {
+  outline: 3px solid #333;
+  outline-offset: -2px;
+}
+
+.organic-cell-empty {
+  background: transparent;
+  border: none;
 }

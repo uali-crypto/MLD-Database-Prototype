@@ -16,7 +16,7 @@ const columnConfig = [
   { field: "P1 Purge Time (s)", type: "number", visible: false },
   { field: "SMILES for Precursor 1", type: "text", visible: false },
   { field: "P1 # Functional Groups", type: "number", visible: false },
-  { field: "Precursor 1 Class", type: "select", visible: true },
+  { field: "Precursor 1 Class", type: "select", visible: false },
   { field: "P1 Ligand/Functional Group Type", type: "select", visible: false },
   { field: "P1 Metal Symbol", type: "text", visible: false },
   { field: "Precursor 2", type: "select", visible: true },
@@ -25,7 +25,7 @@ const columnConfig = [
   { field: "P2 Purge Time (s)", type: "number", visible: false },
   { field: "SMILES for Precursor 2", type: "text", visible: false },
   { field: "P2 # Functional Groups", type: "number", visible: false },
-  { field: "Precursor 2 Class", type: "select", visible: true },
+  { field: "Precursor 2 Class", type: "select", visible: false },
   { field: "P2 Ligand/Functional Group Type", type: "select", visible: false },
   { field: "P2 Metal Symbol", type: "text", visible: false },
   { field: "Precursor 3", type: "select", visible: true },
@@ -34,7 +34,7 @@ const columnConfig = [
   { field: "P3 Purge Time (s)", type: "number", visible: false },
   { field: "SMILES for Precursor 3", type: "text", visible: false },
   { field: "P3 # Functional Groups", type: "number", visible: false },
-  { field: "Precursor 3 Class", type: "select", visible: true },
+  { field: "Precursor 3 Class", type: "select", visible: false },
   { field: "P3 Ligand/Functional Group Type", type: "select", visible: false },
   { field: "P3 Metal Symbol", type: "text", visible: false },
   { field: "Film Material", type: "select", visible: true },
@@ -120,9 +120,8 @@ function setMode(mode) {
   document.getElementById("chart-organic").style.display = mode === "all-organic" ? "block" : "none";
   document.getElementById("toggle-hybrid").classList.toggle("active", mode === "hybrid");
   document.getElementById("toggle-organic").classList.toggle("active", mode === "all-organic");
-  if (table) table.refreshFilter();
+  clearAllSelections();
 }
-
 
 // ===== PERIODIC TABLE: ELEMENT LAYOUT =====
 const ELEMENTS = [
@@ -160,6 +159,33 @@ const FUNCTIONAL_GROUP_LABELS = {
   anhydride: "Anhydride",
   ringopening: "Ring Opening",
   other: "Other"
+};
+
+// ===== ALL-ORGANIC CHART: CATEGORY DEFINITIONS =====
+const ORGANIC_NUCLEOPHILES = [
+  { key: "amine", label: "Amine" },
+  { key: "alcohol", label: "Alcohol" }
+];
+
+const ORGANIC_ELECTROPHILES = [
+  { key: "acylchloride", label: "Acyl Chloride", color: "#c85f95" },
+  { key: "anhydride", label: "Anhydride", color: "#e8a0a0" },
+  { key: "isocyanate", label: "Isocyanate", color: "#e8c96a" },
+  { key: "isothiocyanate", label: "Isothiocyanate", color: "#7fc97f" },
+  { key: "aldehyde", label: "Aldehyde", color: "#7fb8e0" }
+];
+
+// nucleophile|electrophile -> product name. Omit a pair entirely if it has no product.
+const ORGANIC_PRODUCT_MAP = {
+  "amine|acylchloride": "Polyamides",
+  "amine|anhydride": "Polyimides",
+  "amine|isocyanate": "Polyureas",
+  "amine|isothiocyanate": "Polythioureas",
+  "amine|aldehyde": "Polyimines",
+  "alcohol|acylchloride": "Polyesters",
+  "alcohol|anhydride": "Polyesters",
+  "alcohol|isocyanate": "Polyurethanes",
+  "alcohol|isothiocyanate": "Polythiourethanes"
 };
 
 // ===== BUILDING THE ELEMENT -> FUNCTIONAL GROUP MAP FROM SHEET DATA =====
@@ -216,10 +242,66 @@ function buildElementFunctionalGroupMap(data) {
   return map;
 }
 
+// ===== SHARED SELECTION STATE (periodic table + organic chart) =====
+let selectedElementSymbol = null;
+let selectedOrganicPair = null;
+
+function updateSelectionBanner(text) {
+  const banner = document.getElementById("element-filter-banner");
+  const bannerSymbol = document.getElementById("element-filter-banner-symbol");
+  if (text) {
+    bannerSymbol.textContent = text;
+    banner.style.display = "flex";
+  } else {
+    banner.style.display = "none";
+  }
+}
+
+function updateElementSelection(sym) {
+  selectedElementSymbol = (selectedElementSymbol === sym) ? null : sym;
+  selectedOrganicPair = null;
+
+  document.querySelectorAll(".pt-cell.pt-has-data").forEach(cell => {
+    cell.classList.toggle("pt-selected", cell.dataset.symbol === selectedElementSymbol);
+  });
+  document.querySelectorAll(".organic-cell.selected").forEach(c => c.classList.remove("selected"));
+
+  updateSelectionBanner(selectedElementSymbol);
+  if (table) table.refreshFilter();
+}
+
+function updateOrganicSelection(pairKey, label) {
+  selectedOrganicPair = (selectedOrganicPair === pairKey) ? null : pairKey;
+  selectedElementSymbol = null;
+
+  document.querySelectorAll(".pt-cell.pt-selected").forEach(c => c.classList.remove("pt-selected"));
+  document.querySelectorAll(".organic-cell").forEach(cell => {
+    cell.classList.toggle("selected", cell.dataset.pairKey === selectedOrganicPair);
+  });
+
+  updateSelectionBanner(selectedOrganicPair ? label : null);
+  if (table) table.refreshFilter();
+}
+
+function clearAllSelections() {
+  selectedElementSymbol = null;
+  selectedOrganicPair = null;
+  document.querySelectorAll(".pt-cell.pt-selected").forEach(c => c.classList.remove("pt-selected"));
+  document.querySelectorAll(".organic-cell.selected").forEach(c => c.classList.remove("selected"));
+  updateSelectionBanner(null);
+  if (table) table.refreshFilter();
+}
+
+function elementFilter(row) {
+  if (!selectedElementSymbol) return true;
+  return getMetalSymbolForRow(row) === selectedElementSymbol;
+}
+
 // ===== RENDERING THE PERIODIC TABLE =====
 function createElementCell(z, sym, elementGroupMap) {
   const cell = document.createElement("div");
   cell.className = "pt-cell";
+  cell.dataset.symbol = sym;
 
   const numberEl = document.createElement("div");
   numberEl.className = "pt-number";
@@ -234,33 +316,114 @@ function createElementCell(z, sym, elementGroupMap) {
   const groups = elementGroupMap[sym];
   if (groups && groups.size > 0) {
     cell.classList.add("pt-has-data");
-    const tagRow = document.createElement("div");
-    tagRow.className = "pt-tags";
+    cell.addEventListener("click", () => updateElementSelection(sym));
+
+    const swatchGrid = document.createElement("div");
+    swatchGrid.className = "pt-swatch-grid";
     [...groups].forEach(g => {
-      const tag = document.createElement("span");
-      tag.className = "pt-tag";
-      tag.style.backgroundColor = FUNCTIONAL_GROUP_COLORS[g];
-      tag.title = FUNCTIONAL_GROUP_LABELS[g];
-      tagRow.appendChild(tag);
+      const swatch = document.createElement("span");
+      swatch.className = "pt-swatch";
+      swatch.style.backgroundColor = FUNCTIONAL_GROUP_COLORS[g];
+      swatch.title = FUNCTIONAL_GROUP_LABELS[g];
+      swatchGrid.appendChild(swatch);
     });
-    cell.appendChild(tagRow);
+    cell.appendChild(swatchGrid);
   }
+
   return cell;
+}
+
+function renderDiagram() {
+  const diagram = document.createElement("div");
+  diagram.className = "pt-diagram";
+
+  const visual = document.createElement("div");
+  visual.className = "pt-diagram-visual";
+
+  const exampleCell = document.createElement("div");
+  exampleCell.className = "pt-cell pt-has-data pt-diagram-cell";
+
+  const numberEl = document.createElement("div");
+  numberEl.className = "pt-number";
+  numberEl.textContent = "13";
+  exampleCell.appendChild(numberEl);
+
+  const symbolEl = document.createElement("div");
+  symbolEl.className = "pt-symbol";
+  symbolEl.textContent = "Al";
+  exampleCell.appendChild(symbolEl);
+
+  const swatchGrid = document.createElement("div");
+  swatchGrid.className = "pt-swatch-grid";
+  const swatch = document.createElement("span");
+  swatch.className = "pt-swatch";
+  swatch.style.backgroundColor = FUNCTIONAL_GROUP_COLORS.alcohol;
+  swatchGrid.appendChild(swatch);
+  exampleCell.appendChild(swatchGrid);
+
+  visual.appendChild(exampleCell);
+
+  const labels = document.createElement("div");
+  labels.className = "pt-diagram-labels";
+  labels.innerHTML = `
+    <div class="pt-diagram-label" style="top:4px;"><span class="pt-diagram-tick"></span>Atomic number</div>
+    <div class="pt-diagram-label" style="top:34px;"><span class="pt-diagram-tick"></span>Symbol</div>
+    <div class="pt-diagram-label" style="top:64px;"><span class="pt-diagram-tick"></span>Functional groups reacted with this metal</div>
+  `;
+  visual.appendChild(labels);
+  diagram.appendChild(visual);
+
+  const legend = document.createElement("div");
+  legend.className = "pt-diagram-legend";
+  Object.keys(FUNCTIONAL_GROUP_COLORS).forEach(key => {
+    const item = document.createElement("div");
+    item.className = "pt-legend-item";
+    item.innerHTML = `<span class="pt-legend-swatch" style="background:${FUNCTIONAL_GROUP_COLORS[key]}"></span> ${FUNCTIONAL_GROUP_LABELS[key]}`;
+    legend.appendChild(item);
+  });
+  diagram.appendChild(legend);
+
+  return diagram;
 }
 
 function renderPeriodicTable(elementGroupMap) {
   const container = document.getElementById("periodic-table-chart");
   container.innerHTML = "";
 
-  const mainGrid = document.createElement("div");
-  mainGrid.className = "pt-grid";
+  const outer = document.createElement("div");
+  outer.className = "pt-outer";
+
+  const firstPeriodByColumn = {};
+  ELEMENTS.forEach(([z, sym, period, group]) => {
+    if (period === "L") return;
+    if (!(group in firstPeriodByColumn) || period < firstPeriodByColumn[group]) {
+      firstPeriodByColumn[group] = period;
+    }
+  });
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "pt-wrapper";
+
+  // Diagram now lives inside the grid itself, in the empty top-left block
+  const diagram = renderDiagram();
+  diagram.style.gridRow = "1 / 3";
+  diagram.style.gridColumn = "3 / 13";
+  wrapper.appendChild(diagram);
 
   ELEMENTS.forEach(([z, sym, period, group]) => {
     if (period === "L") return;
     const cell = createElementCell(z, sym, elementGroupMap);
     cell.style.gridRow = period;
     cell.style.gridColumn = group;
-    mainGrid.appendChild(cell);
+
+    if (period === firstPeriodByColumn[group]) {
+      const colLabel = document.createElement("div");
+      colLabel.className = "pt-column-label";
+      colLabel.textContent = group;
+      cell.appendChild(colLabel);
+    }
+
+    wrapper.appendChild(cell);
   });
 
   const placeholder = document.createElement("div");
@@ -268,34 +431,140 @@ function renderPeriodicTable(elementGroupMap) {
   placeholder.textContent = "57-71";
   placeholder.style.gridRow = 6;
   placeholder.style.gridColumn = 3;
-  mainGrid.appendChild(placeholder);
+  wrapper.appendChild(placeholder);
 
-  container.appendChild(mainGrid);
+  outer.appendChild(wrapper);
+
+  const lanthanideRow = document.createElement("div");
+  lanthanideRow.className = "pt-lanthanide-row";
 
   const label = document.createElement("div");
   label.className = "pt-lanthanide-label";
   label.textContent = "Lanthanoids";
-  container.appendChild(label);
+  lanthanideRow.appendChild(label);
 
   const lanthanideGrid = document.createElement("div");
-  lanthanideGrid.className = "pt-grid pt-lanthanide-grid";
+  lanthanideGrid.className = "pt-lanthanide-grid";
   ELEMENTS.forEach(([z, sym, period, group]) => {
     if (period !== "L") return;
     const cell = createElementCell(z, sym, elementGroupMap);
-    cell.style.gridColumn = group;
     lanthanideGrid.appendChild(cell);
   });
-  container.appendChild(lanthanideGrid);
+  lanthanideRow.appendChild(lanthanideGrid);
+  outer.appendChild(lanthanideRow);
 
-  const legend = document.createElement("div");
-  legend.className = "pt-legend";
-  Object.keys(FUNCTIONAL_GROUP_COLORS).forEach(key => {
-    const item = document.createElement("div");
-    item.className = "pt-legend-item";
-    item.innerHTML = `<span class="pt-legend-swatch" style="background:${FUNCTIONAL_GROUP_COLORS[key]}"></span> ${FUNCTIONAL_GROUP_LABELS[key]}`;
-    legend.appendChild(item);
+  container.appendChild(outer);
+}
+
+// ===== ALL-ORGANIC CHART =====
+function normalizeOrganicLigandType(rawLigandType) {
+  if (!rawLigandType) return [];
+  const tokens = String(rawLigandType).toLowerCase().split(",").map(t => t.trim());
+  const buckets = [];
+  tokens.forEach(token => {
+    if (token.includes("hydroxyl") || token.includes("alcohol")) buckets.push("alcohol");
+    else if (token.includes("amine")) buckets.push("amine");
+    else if (token.includes("isothiocyanate")) buckets.push("isothiocyanate");
+    else if (token.includes("isocyanate")) buckets.push("isocyanate");
+    else if (token.includes("anhydride")) buckets.push("anhydride");
+    else if (token.includes("acyl chloride") || token.includes("acylchloride")) buckets.push("acylchloride");
+    else if (token.includes("aldehyde")) buckets.push("aldehyde");
   });
-  container.appendChild(legend);
+  return buckets;
+}
+
+const NUCLEOPHILE_KEYS = ORGANIC_NUCLEOPHILES.map(n => n.key);
+const ELECTROPHILE_KEYS = ORGANIC_ELECTROPHILES.map(e => e.key);
+
+function getOrganicPairsForRow(row) {
+  const nucleophiles = new Set();
+  const electrophiles = new Set();
+
+  for (let slot = 1; slot <= 3; slot++) {
+    const precursorName = row[`Precursor ${slot}`];
+    if (!precursorName) continue;
+    normalizeOrganicLigandType(row[`P${slot} Ligand/Functional Group Type`]).forEach(bucket => {
+      if (NUCLEOPHILE_KEYS.includes(bucket)) nucleophiles.add(bucket);
+      if (ELECTROPHILE_KEYS.includes(bucket)) electrophiles.add(bucket);
+    });
+  }
+
+  const pairs = [];
+  nucleophiles.forEach(nuc => {
+    electrophiles.forEach(elec => pairs.push(`${nuc}|${elec}`));
+  });
+  return pairs;
+}
+
+function buildOrganicPairPresenceSet(data) {
+  const set = new Set();
+  data.forEach(row => {
+    const classes = [row["Precursor 1 Class"], row["Precursor 2 Class"], row["Precursor 3 Class"]];
+    const isOrganometallic = classes.some(c => c === "Organometallic");
+    if (isOrganometallic) return;
+    getOrganicPairsForRow(row).forEach(pairKey => set.add(pairKey));
+  });
+  return set;
+}
+
+function renderOrganicChart(pairPresenceSet) {
+  const container = document.getElementById("chart-organic");
+  container.innerHTML = "";
+
+  const grid = document.createElement("div");
+  grid.className = "organic-grid";
+
+  grid.appendChild(document.createElement("div")); // empty top-left corner
+
+  ORGANIC_ELECTROPHILES.forEach(e => {
+    const header = document.createElement("div");
+    header.className = "organic-header electrophile-header";
+    header.textContent = e.label;
+    header.style.background = e.color;
+    grid.appendChild(header);
+  });
+
+  ORGANIC_NUCLEOPHILES.forEach(n => {
+    const rowLabel = document.createElement("div");
+    rowLabel.className = "organic-header nucleophile-header";
+    rowLabel.textContent = n.label;
+    grid.appendChild(rowLabel);
+
+    ORGANIC_ELECTROPHILES.forEach(e => {
+      const pairKey = `${n.key}|${e.key}`;
+      const product = ORGANIC_PRODUCT_MAP[pairKey];
+      const cell = document.createElement("div");
+      cell.className = "organic-cell";
+      cell.dataset.pairKey = pairKey;
+
+      if (!product) {
+        cell.classList.add("organic-cell-empty");
+        grid.appendChild(cell);
+        return;
+      }
+
+      cell.textContent = product;
+      cell.style.setProperty("--organic-color", e.color);
+
+      if (pairPresenceSet.has(pairKey)) {
+        cell.classList.add("organic-active");
+        cell.addEventListener("click", () =>
+          updateOrganicSelection(pairKey, `${n.label} + ${e.label} (${product})`)
+        );
+      } else {
+        cell.classList.add("organic-greyed");
+      }
+
+      grid.appendChild(cell);
+    });
+  });
+
+  container.appendChild(grid);
+}
+
+function organicPairFilter(row) {
+  if (!selectedOrganicPair) return true;
+  return getOrganicPairsForRow(row).includes(selectedOrganicPair);
 }
 
 // ===== INIT =====
@@ -304,6 +573,9 @@ async function init() {
 
   const elementGroupMap = buildElementFunctionalGroupMap(data);
   renderPeriodicTable(elementGroupMap);
+
+  const organicPairPresenceSet = buildOrganicPairPresenceSet(data);
+  renderOrganicChart(organicPairPresenceSet);
 
   const columns = buildColumnDefs(columnConfig);
   table = new Tabulator("#data-table", {
@@ -318,11 +590,17 @@ async function init() {
 
   table.on("tableBuilt", function () {
     table.addFilter(processFilter);
+    table.addFilter(elementFilter);
+    table.addFilter(organicPairFilter);
   });
 
   document.getElementById("toggle-hybrid").addEventListener("click", () => setMode("hybrid"));
   document.getElementById("toggle-organic").addEventListener("click", () => setMode("all-organic"));
-  document.getElementById("clear-filters").addEventListener("click", () => table.clearHeaderFilter());
+  document.getElementById("clear-filters").addEventListener("click", () => {
+    table.clearHeaderFilter();
+    clearAllSelections();
+  });
+  document.getElementById("element-filter-clear").addEventListener("click", () => clearAllSelections());
 
   document.getElementById("toggle-columns").addEventListener("click", () => {
     showAllColumns = !showAllColumns;

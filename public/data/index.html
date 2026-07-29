@@ -3,14 +3,14 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Data | MLD Database</title>
+  <title> | MLD Database</title>
   <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
   <main>
     
 <div class="data-page">
-  <h1>Data</h1>
+  <h1></h1>
 
   <div class="process-toggle">
     <button id="toggle-hybrid" class="toggle-btn active">Hybrid MLD</button>
@@ -19,15 +19,18 @@
 
   <div class="chart-container">
     <div id="periodic-table-chart" class="chart-periodic"></div>
-    <img id="chart-organic" src="/images/all-organic-chart.png"
-         alt="All-organic MLD electrophile/nucleophile chart"
-         class="chart-image" style="display: none;">
+    <div id="chart-organic" class="chart-organic" style="display:none;"></div>
   </div>
 
   <div class="table-controls">
     <button id="toggle-columns" class="toggle-btn">Show More Columns</button>
     <button id="clear-filters" class="toggle-btn">Clear All Filters</button>
   </div>
+
+  <div id="element-filter-banner" class="element-filter-banner" style="display:none;">
+  Showing reactions for: <strong id="element-filter-banner-symbol"></strong>
+  <button id="element-filter-clear">✕</button>
+  </div> 
 
   <div id="data-table"></div>
 </div>
