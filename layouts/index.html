@@ -498,6 +498,7 @@
     }
   });
 
+  // Cheminformatics logic 
   let RDKit = null;
   let rdkitLoadPromise = null;
 
@@ -516,6 +517,7 @@
     return rdkitLoadPromise;
   }
 
+  // Useful for distinguishing between hybrid MLD and all-organic MLD
   const METALS = ["Al","Ti","Zn","Sn","Cu","Fe","Co","Ni","Hf","Zr"];
   const METAL_LIST = METALS.join(",");
 
